@@ -2,17 +2,26 @@
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Mary's Candy Shop");
-        Console.WriteLine("--------------------------------------------------");
-        Console.WriteLine("Today's date: " + DateTime.Now);
-        Console.WriteLine("Days since opening: " + 1);
-        Console.WriteLine("Today's profit: $ " + 5.5m);
-        Console.WriteLine("Today's target achieved: " + false);
-        Console.WriteLine("--------------------------------------------------");
-        Console.WriteLine("Choose one option: ");
-        Console.WriteLine("'V' to view product");
-        Console.WriteLine("'A' to add product");
-        Console.WriteLine("'D' to delete product");
-        Console.WriteLine("'U' to update product");
+        string shopName = "Mary's Candy Shop";
+        string separator = "--------------------------------------------------";
+        DateTime currentDate = DateTime.Now;
+        int daysSinceOpening = 1;
+        decimal todaysProfit = 5.5m;
+        bool targetAchieved = false;
+        string menu =
+        "Choose one option:\n" +
+        "'V' to view products\n" +
+        "'A' to add product\n" +
+        "'D' to delete product\n" +
+        "'U' to update product\n";
+
+        Console.WriteLine(shopName);
+        Console.WriteLine(separator);
+        Console.WriteLine("Today's date: " + currentDate);
+        Console.WriteLine("Days since opening: " + daysSinceOpening);
+        Console.WriteLine("Today's profit: $ " + todaysProfit);
+        Console.WriteLine("Today's target achieved: " + targetAchieved);
+        Console.WriteLine(separator);
+        Console.WriteLine(menu);
     }
 }
