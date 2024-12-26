@@ -112,14 +112,21 @@
 
                 if (!string.IsNullOrWhiteSpace(indexProduct))
                 {
-                    if (products.ContainsKey(int.Parse(indexProduct)))
+                    try
                     {
-                        products.Remove(int.Parse(indexProduct));
-                        Console.WriteLine("Product removed successfully.");
-                        return;
-                    }
+                        if (products.ContainsKey(int.Parse(indexProduct)))
+                        {
+                            products.Remove(int.Parse(indexProduct));
+                            Console.WriteLine("Product removed successfully.");
+                            return;
+                        }
 
-                    Console.WriteLine("Product id not found, please insert a valid id:");
+                        Console.WriteLine("Product id not found, please insert a valid id:");
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Product id not found, please insert a valid id:");
+                    }
                 }
             }
         }
@@ -142,31 +149,36 @@
 
                 var productIndex = Console.ReadLine();
 
-                if (products.ContainsKey(int.Parse(productIndex)))
+                try
                 {
-                    Console.WriteLine("Enter the new product name:");
-                    var newProductName = Console.ReadLine();
-
-                    if (!string.IsNullOrWhiteSpace(newProductName) && newProductName.Length > 2)
+                    if (products.ContainsKey(int.Parse(productIndex)))
                     {
-                        var result = CapitalizeFirstLetter(newProductName);
+                        Console.WriteLine("Enter the new product name:");
+                        var newProductName = Console.ReadLine();
 
-                        if (!products.ContainsValue(result))
+                        if (!string.IsNullOrWhiteSpace(newProductName) && newProductName.Length > 2)
                         {
-                            products[int.Parse(productIndex)] = result;
-                            Console.WriteLine("Product added successfully.");
-                            return;
+                            var result = CapitalizeFirstLetter(newProductName);
+
+                            if (!products.ContainsValue(result))
+                            {
+                                products[int.Parse(productIndex)] = result;
+                                Console.WriteLine("Product added successfully.");
+                                return;
+                            }
+
+                            Console.WriteLine("Product already exists. please insert a different product:");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Product cannot be empty, please insert a valid product:");
                         }
 
-                        Console.WriteLine("Product already exists. please insert a different product:");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Product cannot be empty, please insert a valid product:");
                     }
 
+                    Console.WriteLine("Product id not found, please insert a valid id:");
                 }
-                else
+                catch (Exception)
                 {
                     Console.WriteLine("Product id not found, please insert a valid id:");
                 }
@@ -215,32 +227,46 @@
 
     void SaveProducts()
     {
-        if (products.Count > 0)
+        try
         {
-            using (StreamWriter outputFile = new StreamWriter(DocPath))
+            if (products.Count > 0)
             {
-                foreach (KeyValuePair<int, string> product in products)
+                using (StreamWriter outputFile = new StreamWriter(DocPath))
                 {
-                    outputFile.WriteLine($"{product.Key},{product.Value}");
-                }
+                    foreach (KeyValuePair<int, string> product in products)
+                    {
+                        outputFile.WriteLine($"{product.Key},{product.Value}");
+                    }
 
-                Console.WriteLine("Products saved.");
+                    Console.WriteLine("Products saved.");
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred while saving products: " + ex.Message);
         }
     }
 
     void LoadData()
     {
-        using (StreamReader reader = new(DocPath))
+        try
         {
-            var line = reader.ReadLine();
-
-            while (line != null)
+            using (StreamReader reader = new(DocPath))
             {
-                string[] parts = line.Split(',');
-                products.Add(int.Parse(parts[0]), parts[1]);
-                line = reader.ReadLine();
+                var line = reader.ReadLine();
+
+                while (line != null)
+                {
+                    string[] parts = line.Split(',');
+                    products.Add(int.Parse(parts[0]), parts[1]);
+                    line = reader.ReadLine();
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred while loading products: " + ex.Message);
         }
     }
 
