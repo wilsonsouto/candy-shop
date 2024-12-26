@@ -67,7 +67,7 @@
 
     void AddProduct()
     {
-        Console.WriteLine("Enter a product name:");
+        Console.WriteLine("Enter the product name:");
 
         while (true)
         {
@@ -98,7 +98,7 @@
     {
         if (products.Count > 0)
         {
-            Console.WriteLine("Enter a product id:");
+            Console.WriteLine("Enter the product id:");
 
             while (true)
 
@@ -131,7 +131,7 @@
     {
         if (products.Count > 0)
         {
-            Console.WriteLine("Enter a product id:");
+            Console.WriteLine("Enter the product id:");
 
             while (true)
             {
