@@ -1,5 +1,6 @@
 ﻿internal class Program
 {
+    public Dictionary<int, string> products = new();
     private static void Main(string[] args)
     {
         Program program = new Program();
@@ -25,26 +26,68 @@
                     program.UpdateProduct();
                     break;
                 case "Q":
-                    Console.WriteLine("Exiting the program");
+                    Console.WriteLine("Exiting the program.");
                     return;
                 default:
-                    Console.WriteLine(program.GetMenu("Invalid option. Please choose one of the above:"));
+                    Console.WriteLine("Invalid choice.");
                     break;
             }
 
-            Console.WriteLine("Press any key to go back on the menu");
-            Console.Clear();
+            Console.WriteLine("\nPress any key to go back on the menu: ");
+            Console.ReadLine();
+            Console.WriteLine(program.GetMenu());
         }
     }
 
     void ViewProducts()
     {
-        Console.WriteLine("User chose to view the products");
+        if (products.Count > 0)
+        {
+            var productsCount = products.Count == 1 ? $"The product list contains {products.Count} product." : $"The product list contains {products.Count} products.";
+            Console.WriteLine(productsCount);
+
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+            return;
+        }
+
+        Console.WriteLine("The product list is empty.");
     }
 
     void AddProduct()
     {
-        Console.WriteLine("User chose to add the product");
+        Console.WriteLine("Enter a product name: ");
+
+        while (true)
+        {
+            var product = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(product))
+            {
+                var result = CapitalizeFirstLetter(product);
+
+                if (!products.ContainsValue(result))
+                {
+                    int newKey = products.Count > 0 ? products.Keys.Max() + 1 : 1;
+                    products.TryAdd(newKey, result);
+                    Console.WriteLine("Product added successfully.");
+                    return;
+                }
+
+                Console.WriteLine("The product already exists. Please insert a different product: ");
+            }
+            else
+            {
+                Console.WriteLine("Product cannot be empty. Please insert a valid product:");
+            }
+        }
+
+        string CapitalizeFirstLetter(string product)
+        {
+            return char.ToUpper(product[0]) + product.Substring(1).ToLower();
+        }
     }
 
     void DeleteProduct()
@@ -72,13 +115,13 @@
         $"Today's profit: $ {todaysProfit}\n" +
         $"Today's target achieved: {targetAchieved}\n" +
         $"{separator}\n" +
-        $"{GetMenu("Choose one option:")}");
+        $"{GetMenu()}");
     }
 
-    string GetMenu(string message)
+    string GetMenu()
     {
         return
-        $"{message}\n" +
+        "Choose one option:\n" +
         "'V' to view products\n" +
         "'A' to add product\n" +
         "'D' to delete product\n" +
