@@ -1,6 +1,9 @@
 ﻿internal class Program
 {
     public Dictionary<int, string> products = new();
+
+    public string DocPath = "/home/wilson/Repositories/candy-shop/CandyShop/products.txt";
+
     private static void Main(string[] args)
     {
         Program program = new Program();
@@ -26,6 +29,7 @@
                     program.UpdateProduct();
                     break;
                 case "Q":
+                    program.SaveProducts();
                     Console.WriteLine("Exiting the program.");
                     return;
                 default:
@@ -135,5 +139,20 @@
         TimeSpan timeDifference = DateTime.Now - openingDate;
 
         return timeDifference.Days;
+    }
+    void SaveProducts()
+    {
+        if (products.Count > 0)
+        {
+            using (StreamWriter outputFile = new StreamWriter(DocPath))
+            {
+                foreach (KeyValuePair<int, string> product in products)
+                {
+                    outputFile.WriteLine(product);
+                }
+
+                Console.WriteLine("Products saved.");
+            }
+        }
     }
 }
