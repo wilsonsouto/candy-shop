@@ -4,6 +4,8 @@
 
     public string DocPath = "/home/wilson/Repositories/candy-shop/CandyShop/products.txt";
 
+    public const string EmptyProductList = "The product list is empty.";
+
     private static void Main(string[] args)
     {
         Program program = new Program();
@@ -60,7 +62,7 @@
             return;
         }
 
-        Console.WriteLine("The product list is empty.");
+        Console.WriteLine(EmptyProductList);
     }
 
     void AddProduct()
@@ -94,74 +96,84 @@
 
     void DeleteProduct()
     {
-        Console.WriteLine("Enter a product id:");
-
-        while (true)
-
+        if (products.Count > 0)
         {
-            foreach (KeyValuePair<int, string> product in products)
-            {
-                Console.WriteLine($"{product.Key}: {product.Value}");
-            }
+            Console.WriteLine("Enter a product id:");
 
-            var indexProduct = Console.ReadLine();
+            while (true)
 
-            if (!string.IsNullOrWhiteSpace(indexProduct))
             {
-                if (products.ContainsKey(int.Parse(indexProduct)))
+                foreach (KeyValuePair<int, string> product in products)
                 {
-                    products.Remove(int.Parse(indexProduct));
-                    Console.WriteLine("Product removed successfully.");
-                    return;
+                    Console.WriteLine($"{product.Key}: {product.Value}");
                 }
 
-                Console.WriteLine("Product id not found, please insert a valid id:");
+                var indexProduct = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(indexProduct))
+                {
+                    if (products.ContainsKey(int.Parse(indexProduct)))
+                    {
+                        products.Remove(int.Parse(indexProduct));
+                        Console.WriteLine("Product removed successfully.");
+                        return;
+                    }
+
+                    Console.WriteLine("Product id not found, please insert a valid id:");
+                }
             }
         }
+
+        Console.WriteLine(EmptyProductList);
     }
 
     void UpdateProduct()
     {
-        Console.WriteLine("Enter a product id:");
-
-        while (true)
+        if (products.Count > 0)
         {
-            foreach (KeyValuePair<int, string> product in products)
+            Console.WriteLine("Enter a product id:");
+
+            while (true)
             {
-                Console.WriteLine($"{product.Key}: {product.Value}");
-            }
-
-            var productIndex = Console.ReadLine();
-
-            if (products.ContainsKey(int.Parse(productIndex)))
-            {
-                Console.WriteLine("Enter the new product name:");
-                var newProductName = Console.ReadLine();
-
-                if (!string.IsNullOrWhiteSpace(newProductName) && newProductName.Length > 2)
+                foreach (KeyValuePair<int, string> product in products)
                 {
-                    var result = CapitalizeFirstLetter(newProductName);
+                    Console.WriteLine($"{product.Key}: {product.Value}");
+                }
 
-                    if (!products.ContainsValue(result))
+                var productIndex = Console.ReadLine();
+
+                if (products.ContainsKey(int.Parse(productIndex)))
+                {
+                    Console.WriteLine("Enter the new product name:");
+                    var newProductName = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(newProductName) && newProductName.Length > 2)
                     {
-                        products[int.Parse(productIndex)] = result;
-                        Console.WriteLine("Product added successfully.");
-                        return;
+                        var result = CapitalizeFirstLetter(newProductName);
+
+                        if (!products.ContainsValue(result))
+                        {
+                            products[int.Parse(productIndex)] = result;
+                            Console.WriteLine("Product added successfully.");
+                            return;
+                        }
+
+                        Console.WriteLine("Product already exists. please insert a different product:");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Product cannot be empty, please insert a valid product:");
                     }
 
-                    Console.WriteLine("Product already exists. please insert a different product:");
                 }
                 else
                 {
-                    Console.WriteLine("Product cannot be empty, please insert a valid product:");
+                    Console.WriteLine("Product id not found, please insert a valid id:");
                 }
-
-            }
-            else
-            {
-                Console.WriteLine("Product id not found, please insert a valid id:");
             }
         }
+
+        Console.WriteLine(EmptyProductList);
     }
 
     void PrintHeader()
