@@ -8,6 +8,9 @@
     {
         Program program = new Program();
 
+        if (File.Exists(program.DocPath))
+            program.LoadData();
+
         program.PrintHeader();
 
         while (true)
@@ -140,6 +143,7 @@
 
         return timeDifference.Days;
     }
+
     void SaveProducts()
     {
         if (products.Count > 0)
@@ -148,10 +152,25 @@
             {
                 foreach (KeyValuePair<int, string> product in products)
                 {
-                    outputFile.WriteLine(product);
+                    outputFile.WriteLine($"{product.Key}, {product.Value}");
                 }
 
                 Console.WriteLine("Products saved.");
+            }
+        }
+    }
+
+    void LoadData()
+    {
+        using (StreamReader reader = new(DocPath))
+        {
+            var line = reader.ReadLine();
+
+            while (line != null)
+            {
+                string[] parts = line.Split(',');
+                products.Add(int.Parse(parts[0]), parts[1]);
+                line = reader.ReadLine();
             }
         }
     }
