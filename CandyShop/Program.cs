@@ -40,7 +40,7 @@
                     break;
             }
 
-            Console.WriteLine("\nPress any key to go back on the menu: ");
+            Console.WriteLine("\nPress any key to go back on the menu:");
             Console.ReadLine();
             Console.WriteLine(program.GetMenu());
         }
@@ -53,9 +53,9 @@
             var productsCount = products.Count == 1 ? $"The product list contains {products.Count} product." : $"The product list contains {products.Count} products.";
             Console.WriteLine(productsCount);
 
-            foreach (var product in products)
+            foreach (KeyValuePair<int, string> product in products)
             {
-                Console.WriteLine(product);
+                Console.WriteLine($"{product.Key}: {product.Value}");
             }
             return;
         }
@@ -65,13 +65,13 @@
 
     void AddProduct()
     {
-        Console.WriteLine("Enter a product name: ");
+        Console.WriteLine("Enter a product name:");
 
         while (true)
         {
-            var product = Console.ReadLine();
+            var product = Console.ReadLine()?.Trim();
 
-            if (!string.IsNullOrWhiteSpace(product))
+            if (!string.IsNullOrWhiteSpace(product) && product.Length > 2)
             {
                 var result = CapitalizeFirstLetter(product);
 
@@ -83,28 +83,85 @@
                     return;
                 }
 
-                Console.WriteLine("The product already exists. Please insert a different product: ");
+                Console.WriteLine("Product already exists. please insert a different product:");
             }
             else
             {
-                Console.WriteLine("Product cannot be empty. Please insert a valid product:");
+                Console.WriteLine("Product cannot be empty, please insert a valid product:");
             }
-        }
-
-        string CapitalizeFirstLetter(string product)
-        {
-            return char.ToUpper(product[0]) + product.Substring(1).ToLower();
         }
     }
 
     void DeleteProduct()
     {
-        Console.WriteLine("User chose to delete the product");
+        Console.WriteLine("Enter a product id:");
+
+        while (true)
+
+        {
+            foreach (KeyValuePair<int, string> product in products)
+            {
+                Console.WriteLine($"{product.Key}: {product.Value}");
+            }
+
+            var indexProduct = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(indexProduct))
+            {
+                if (products.ContainsKey(int.Parse(indexProduct)))
+                {
+                    products.Remove(int.Parse(indexProduct));
+                    Console.WriteLine("Product removed successfully.");
+                    return;
+                }
+
+                Console.WriteLine("Product id not found, please insert a valid id:");
+            }
+        }
     }
 
     void UpdateProduct()
     {
-        Console.WriteLine("User chose to update the product");
+        Console.WriteLine("Enter a product id:");
+
+        while (true)
+        {
+            foreach (KeyValuePair<int, string> product in products)
+            {
+                Console.WriteLine($"{product.Key}: {product.Value}");
+            }
+
+            var productIndex = Console.ReadLine();
+
+            if (products.ContainsKey(int.Parse(productIndex)))
+            {
+                Console.WriteLine("Enter the new product name:");
+                var newProductName = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(newProductName) && newProductName.Length > 2)
+                {
+                    var result = CapitalizeFirstLetter(newProductName);
+
+                    if (!products.ContainsValue(result))
+                    {
+                        products[int.Parse(productIndex)] = result;
+                        Console.WriteLine("Product added successfully.");
+                        return;
+                    }
+
+                    Console.WriteLine("Product already exists. please insert a different product:");
+                }
+                else
+                {
+                    Console.WriteLine("Product cannot be empty, please insert a valid product:");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Product id not found, please insert a valid id:");
+            }
+        }
     }
 
     void PrintHeader()
@@ -152,7 +209,7 @@
             {
                 foreach (KeyValuePair<int, string> product in products)
                 {
-                    outputFile.WriteLine($"{product.Key}, {product.Value}");
+                    outputFile.WriteLine($"{product.Key},{product.Value}");
                 }
 
                 Console.WriteLine("Products saved.");
@@ -173,5 +230,10 @@
                 line = reader.ReadLine();
             }
         }
+    }
+
+    string CapitalizeFirstLetter(string product)
+    {
+        return char.ToUpper(product[0]) + product.Substring(1).ToLower();
     }
 }
