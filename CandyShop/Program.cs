@@ -6,25 +6,34 @@
 
         program.PrintHeader();
 
-        string usersChoice = Console.ReadLine().ToUpperInvariant();
-
-        switch (usersChoice)
+        while (true)
         {
-            case "V":
-                program.ViewProducts();
-                break;
-            case "A":
-                program.AddProduct();
-                break;
-            case "D":
-                program.DeleteProduct();
-                break;
-            case "U":
-                program.UpdateProduct();
-                break;
-            default:
-                Console.WriteLine("Invalid option");
-                break;
+            string usersChoice = Console.ReadLine().ToUpperInvariant();
+
+            switch (usersChoice)
+            {
+                case "V":
+                    program.ViewProducts();
+                    break;
+                case "A":
+                    program.AddProduct();
+                    break;
+                case "D":
+                    program.DeleteProduct();
+                    break;
+                case "U":
+                    program.UpdateProduct();
+                    break;
+                case "Q":
+                    Console.WriteLine("Exiting the program");
+                    return;
+                default:
+                    Console.WriteLine(program.GetMenu("Invalid option. Please choose one of the above:"));
+                    break;
+            }
+
+            Console.WriteLine("Press any key to go back on the menu");
+            Console.Clear();
         }
     }
 
@@ -63,17 +72,18 @@
         $"Today's profit: $ {todaysProfit}\n" +
         $"Today's target achieved: {targetAchieved}\n" +
         $"{separator}\n" +
-        $"{GetMenu()}");
+        $"{GetMenu("Choose one option:")}");
     }
 
-    string GetMenu()
+    string GetMenu(string message)
     {
         return
-        "Choose one option:\n" +
+        $"{message}\n" +
         "'V' to view products\n" +
         "'A' to add product\n" +
         "'D' to delete product\n" +
-        "'U' to update product\n";
+        "'U' to update product\n" +
+        "'Q' to quit the program\n";
     }
 
     int GetDaysSinceOpening()
