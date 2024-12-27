@@ -44,42 +44,27 @@ namespace CandyShop.Controllers
             return _productList;
         }
 
-        internal void AddProduct()
+        internal void AddProduct(Product product)
         {
-            while (true)
+            try
             {
-                try
+                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
                 {
-                    Console.WriteLine("Enter the product name: ");
-                    var name = Console.ReadLine();
-
-                    Console.WriteLine("Enter the product price: ");
-                    var price = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(price))
+                    if (outputFile.BaseStream.Length <= 3)
                     {
-                        _userProduct = new Product(_productList.Count + 1, name, decimal.Parse(price));
-                        _productList.Add(_userProduct);
-
-                        using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
-                        {
-                            if (outputFile.BaseStream.Length <= 3)
-                            {
-                                outputFile.WriteLine("Id, Name, Price");
-                            }
-
-                            outputFile.WriteLine(_userProduct.ToString());
-                        }
-
-                        Console.WriteLine("Product saved.");
-                        return;
+                        outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
                     }
+
+                    outputFile.WriteLine(product.ToString());
                 }
 
-                catch (Exception ex)
-                {
-                    Console.WriteLine("An error occurred while saving products: " + ex.Message);
-                }
+                Console.WriteLine("Product saved.");
+                return;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while saving products: " + ex.Message);
             }
         }
 
