@@ -1,17 +1,14 @@
-
 namespace CandyShop.Models
 {
     internal class Product
     {
-        private string _name { get; set; } = "";
+        internal int Id { get; set; }
+
+        private string _name;
 
         internal string Name
         {
-            get
-            {
-                return _name;
-            }
-
+            get => _name;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -24,13 +21,35 @@ namespace CandyShop.Models
                     throw new ArgumentException("Name must be at least 3 characters long.");
                 }
 
-                var result = Helpers.CapitalizeFirstLetter(value);
-                _name = result;
+                _name = value;
             }
         }
 
-        internal int Id { get; set; }
+        private decimal _price;
 
-        internal decimal Price { get; set; }
+        internal decimal Price
+        {
+            get => _price;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Price cannot be negative.");
+                }
+                _price = value;
+            }
+        }
+
+        internal Product(int id, string name, decimal price)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+        }
+
+        public override string ToString()
+        {
+            return $"{Id}, {Name}, {Price}";
+        }
     }
 }

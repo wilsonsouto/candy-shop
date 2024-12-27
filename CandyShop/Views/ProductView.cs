@@ -15,7 +15,7 @@ namespace CandyShop.Views
 
             while (true)
             {
-                string usersChoice = Console.ReadLine().ToUpperInvariant();
+                string? usersChoice = Console.ReadLine().ToUpperInvariant();
 
                 switch (usersChoice)
                 {
@@ -51,9 +51,9 @@ namespace CandyShop.Views
             Console.WriteLine($"The product list contains {products.Count} product(s).");
 
             Console.WriteLine(Separator);
-            foreach (var product in products)
+            foreach (Product product in products)
             {
-                Console.WriteLine($"{product.Id}, {product.Name}, {product.Price}");
+                Console.WriteLine(product.ToString());
             }
             Console.WriteLine(Separator);
         }
