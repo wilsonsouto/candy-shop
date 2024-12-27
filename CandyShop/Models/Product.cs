@@ -4,7 +4,7 @@ namespace CandyShop.Models
     {
         internal int Id { get; set; }
 
-        private string _name;
+        private string _name = "";
 
         internal string Name
         {
@@ -21,7 +21,8 @@ namespace CandyShop.Models
                     throw new ArgumentException("Name must be at least 3 characters long.");
                 }
 
-                _name = value;
+                var capitalizedName = Helpers.CapitalizeFirstLetter(value);
+                _name = capitalizedName;
             }
         }
 

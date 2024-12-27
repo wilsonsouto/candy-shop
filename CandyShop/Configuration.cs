@@ -2,6 +2,6 @@ namespace CandyShop
 {
     internal static class Configuration
     {
-        internal static string DocPath = "../../../Products.csv";
+        internal static string DocPath = "../../candy-shop/CandyShop/Products.csv";
     }
 }

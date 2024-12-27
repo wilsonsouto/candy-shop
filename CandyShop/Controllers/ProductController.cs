@@ -6,7 +6,7 @@ namespace CandyShop.Controllers
     {
         private readonly List<Product> _productList = new();
 
-        private Product _userProduct;
+        private Product? _userProduct;
 
         internal List<Product> GetProducts()
         {
@@ -54,25 +54,26 @@ namespace CandyShop.Controllers
                     var name = Console.ReadLine();
 
                     Console.WriteLine("Enter the product price: ");
-                    var price = decimal.Parse(Console.ReadLine());
+                    var price = Console.ReadLine();
 
-                    var capitalizedName = Helpers.CapitalizeFirstLetter(name);
-                    _userProduct = new Product(_productList.Count + 1, capitalizedName, price);
-                    _productList.Add(_userProduct);
-
-                    using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
+                    if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(price))
                     {
-                        if (outputFile.BaseStream.Length <= 3)
+                        _userProduct = new Product(_productList.Count + 1, name, decimal.Parse(price));
+                        _productList.Add(_userProduct);
+
+                        using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
                         {
-                            outputFile.WriteLine("Id, Name, Price");
+                            if (outputFile.BaseStream.Length <= 3)
+                            {
+                                outputFile.WriteLine("Id, Name, Price");
+                            }
+
+                            outputFile.WriteLine(_userProduct.ToString());
                         }
 
-                        outputFile.WriteLine(_userProduct.ToString());
+                        Console.WriteLine("Product saved.");
+                        return;
                     }
-
-                    Console.WriteLine("Product saved.");
-                    return;
-
                 }
 
                 catch (Exception ex)
