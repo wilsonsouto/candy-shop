@@ -7,7 +7,7 @@ namespace CandyShop.Views
         internal static void RunMainMenu()
         {
             ProductsController productsController = new();
-            
+
             PrintHeader();
 
             while (true)
@@ -17,7 +17,8 @@ namespace CandyShop.Views
                 switch (usersChoice)
                 {
                     case "V":
-                        productsController.ViewProducts();
+                        var result = productsController.GetData();
+                        ViewProducts(result);
                         break;
                     case "A":
                         productsController.AddProduct();
@@ -29,7 +30,6 @@ namespace CandyShop.Views
                         productsController.UpdateProduct();
                         break;
                     case "Q":
-                        productsController.SaveProducts();
                         Console.WriteLine("Exiting the program.");
                         return;
                     default:
@@ -40,6 +40,16 @@ namespace CandyShop.Views
                 Console.WriteLine("\nPress any key to go back on the menu:");
                 Console.ReadLine();
                 Console.WriteLine(GetMenu());
+            }
+        }
+
+        internal static void ViewProducts(List<string> products)
+        {
+            Console.WriteLine($"The product list contains {products.Count} product(s).");
+
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
             }
         }
 
