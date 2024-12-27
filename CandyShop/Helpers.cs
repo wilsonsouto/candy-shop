@@ -1,6 +1,6 @@
 namespace CandyShop
 {
-    internal class Helpers
+    internal static class Helpers
     {
         internal static int GetDaysSinceOpening()
         {

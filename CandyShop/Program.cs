@@ -1,5 +1,4 @@
-﻿using CandyShop.Controllers;
-using CandyShop.Views;
+﻿using CandyShop.Views;
 
 namespace CandyShop
 {
@@ -10,5 +9,4 @@ namespace CandyShop
             ProductView.RunMainMenu();
         }
     }
-
 }

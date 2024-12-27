@@ -1,12 +1,15 @@
 using CandyShop.Controllers;
+using CandyShop.Models;
 
 namespace CandyShop.Views
 {
     internal class ProductView
     {
+        private const string Separator = "--------------------------------------------------";
+
         internal static void RunMainMenu()
         {
-            ProductsController productsController = new();
+            ProductController productController = new();
 
             PrintHeader();
 
@@ -17,17 +20,17 @@ namespace CandyShop.Views
                 switch (usersChoice)
                 {
                     case "V":
-                        var result = productsController.GetData();
+                        var result = productController.GetProducts();
                         ViewProducts(result);
                         break;
                     case "A":
-                        productsController.AddProduct();
+                        productController.AddProduct();
                         break;
                     case "D":
-                        productsController.DeleteProduct();
+                        productController.DeleteProduct();
                         break;
                     case "U":
-                        productsController.UpdateProduct();
+                        productController.UpdateProduct();
                         break;
                     case "Q":
                         Console.WriteLine("Exiting the program.");
@@ -43,31 +46,32 @@ namespace CandyShop.Views
             }
         }
 
-        internal static void ViewProducts(List<string> products)
+        internal static void ViewProducts(List<Product> products)
         {
             Console.WriteLine($"The product list contains {products.Count} product(s).");
 
+            Console.WriteLine(Separator);
             foreach (var product in products)
             {
-                Console.WriteLine(product);
+                Console.WriteLine($"{product.Id}, {product.Name}, {product.Price}");
             }
+            Console.WriteLine(Separator);
         }
 
         private static void PrintHeader()
         {
             string shopName = "Mary's Candy Shop";
-            string separator = "--------------------------------------------------";
             DateTime currentDate = DateTime.Now;
             decimal todaysProfit = 5.5m;
             bool targetAchieved = false;
 
             Console.WriteLine($"{shopName}\n" +
-            $"{separator}\n" +
+            $"{Separator}\n" +
             $"Today's date: {currentDate:dd/MM/yyyy}\n" +
             $"Days since opening: {Helpers.GetDaysSinceOpening()}\n" +
             $"Today's profit: $ {todaysProfit}\n" +
             $"Today's target achieved: {targetAchieved}\n" +
-            $"{separator}\n" +
+            $"{Separator}\n" +
             $"{GetMenu()}");
         }
 
@@ -83,5 +87,3 @@ namespace CandyShop.Views
         }
     }
 }
-
-
