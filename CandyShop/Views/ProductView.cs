@@ -1,5 +1,6 @@
 using CandyShop.Controllers;
 using CandyShop.Models;
+using Spectre.Console;
 
 namespace CandyShop.Views
 {
@@ -15,34 +16,39 @@ namespace CandyShop.Views
 
             while (true)
             {
-                string? usersChoice = Console.ReadLine().ToUpperInvariant();
+                var usersChoice = AnsiConsole.Prompt(
+                      new SelectionPrompt<Enums.MainMenuOptions>()
+                          .Title("What would you like to do?")
+                          .AddChoices(
+                            Enums.MainMenuOptions.ViewProducts,
+                            Enums.MainMenuOptions.AddProduct,
+                            Enums.MainMenuOptions.DeleteProduct,
+                            Enums.MainMenuOptions.UpdateProduct,
+                            Enums.MainMenuOptions.QuitProgram));
+
 
                 switch (usersChoice)
                 {
-                    case "V":
+                    case Enums.MainMenuOptions.ViewProducts:
                         var result = productController.GetProducts();
                         ViewProducts(result);
                         break;
-                    case "A":
+                    case Enums.MainMenuOptions.AddProduct:
                         productController.AddProduct();
                         break;
-                    case "D":
+                    case Enums.MainMenuOptions.DeleteProduct:
                         productController.DeleteProduct();
                         break;
-                    case "U":
+                    case Enums.MainMenuOptions.UpdateProduct:
                         productController.UpdateProduct();
                         break;
-                    case "Q":
+                    case Enums.MainMenuOptions.QuitProgram:
                         Console.WriteLine("Exiting the program.");
                         return;
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        break;
                 }
 
                 Console.WriteLine("\nPress any key to go back on the menu:");
                 Console.ReadLine();
-                Console.WriteLine(GetMenu());
             }
         }
 
@@ -71,19 +77,7 @@ namespace CandyShop.Views
             $"Days since opening: {Helpers.GetDaysSinceOpening()}\n" +
             $"Today's profit: $ {todaysProfit}\n" +
             $"Today's target achieved: {targetAchieved}\n" +
-            $"{Separator}\n" +
-            $"{GetMenu()}");
-        }
-
-        private static string GetMenu()
-        {
-            return
-            "Choose one option:\n" +
-            "'V' to view products\n" +
-            "'A' to add product\n" +
-            "'D' to delete product\n" +
-            "'U' to update product\n" +
-            "'Q' to quit the program\n";
+            $"{Separator}\n");
         }
     }
 }
