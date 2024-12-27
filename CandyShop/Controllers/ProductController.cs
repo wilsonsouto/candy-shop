@@ -12,6 +12,7 @@ namespace CandyShop.Controllers
             {
                 using (StreamReader reader = new(Configuration.DocPath))
                 {
+                    reader.ReadLine(); // discard first line
                     var line = reader.ReadLine();
 
                     while (line != null)
@@ -47,7 +48,13 @@ namespace CandyShop.Controllers
             {
                 using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
                 {
-                    outputFile.WriteLine($"{id}, {name}, {price}");
+                    if (outputFile.BaseStream.Length <= 3)
+                    {
+                        outputFile.WriteLine("Id, Name, Price");
+                    }
+
+                    var csvLine = $"{id}, {name}, {price}";
+                    outputFile.WriteLine(csvLine);
                 }
 
                 Console.WriteLine("Product saved.");
