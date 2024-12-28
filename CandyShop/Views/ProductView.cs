@@ -61,7 +61,7 @@ namespace CandyShop.Views
             Console.WriteLine(Separator);
             foreach (Product product in products)
             {
-                Console.WriteLine(product.ToString());
+                Console.WriteLine(product.GetProductsForCsv(product.Id));
             }
             Console.WriteLine(Separator);
         }

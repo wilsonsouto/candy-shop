@@ -2,7 +2,7 @@ using static CandyShop.Enums;
 
 namespace CandyShop.Models
 {
-    internal class Product
+    internal abstract class Product
     {
         internal int Id { get; set; }
 
@@ -26,22 +26,27 @@ namespace CandyShop.Models
             Price = price;
         }
 
-        public override string ToString()
-        {
-            return $"{Id}, {Name}, {Price}";
-        }
+        internal abstract string GetProductsForCsv(int id);
     }
 
     internal class ChocolateBar : Product
     {
         internal int CocoaPercentage { get; set; }
 
-        internal ChocolateBar() { }
+        internal ChocolateBar()
+        {
+            Type = ProductType.ChocolateBar;
+        }
 
         internal ChocolateBar(int id)
             : base(id)
         {
             Type = ProductType.ChocolateBar;
+        }
+
+        internal override string GetProductsForCsv(int id)
+        {
+            return $"{id},{(int)Type},{Name},{Price},{CocoaPercentage}";
         }
     }
 
@@ -49,12 +54,20 @@ namespace CandyShop.Models
     {
         internal string Shape { get; set; } = "";
 
-        internal Lollipop() { }
+        internal Lollipop()
+        {
+            Type = ProductType.Lollipop;
+        }
 
         internal Lollipop(int id)
             : base(id)
         {
             Type = ProductType.Lollipop;
+        }
+
+        internal override string GetProductsForCsv(int id)
+        {
+            return $"{id},{(int)Type},{Name},{Price},,{Shape}";
         }
     }
 }

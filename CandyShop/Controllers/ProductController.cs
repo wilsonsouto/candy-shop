@@ -1,15 +1,14 @@
 using CandyShop.Models;
+using static CandyShop.Enums;
 
 namespace CandyShop.Controllers
 {
     internal class ProductController
     {
-        private readonly List<Product> _productList = new();
-
-        private Product? _userProduct;
-
         internal List<Product> GetProducts()
         {
+            var products = new List<Product>();
+
             try
             {
                 using (StreamReader reader = new StreamReader(Configuration.DocPath, true))
@@ -21,15 +20,31 @@ namespace CandyShop.Controllers
                     {
                         string[] parts = line.Split(',');
 
-                        var id = int.Parse(parts[0].Trim());
-                        var name = parts[1].Trim();
-                        var price = decimal.Parse(parts[2].Trim());
-
-                        _userProduct = new Product(id, name, price);
-
-                        if (!_productList.Any(p => p.Id == _userProduct.Id))
+                        if (int.Parse(parts[1]) == (int)ProductType.ChocolateBar)
                         {
-                            _productList.Add(_userProduct);
+                            var product = new ChocolateBar(int.Parse(parts[0]));
+                            product.Name = parts[2].Trim();
+                            product.Price = decimal.Parse(parts[3].Trim());
+                            product.CocoaPercentage = int.Parse(parts[4].Trim());
+                            products.Add(product);
+
+                            // if (!products.Any(p => p.Id == product.Id))
+                            // {
+                            //     products.Add(product);
+                            // }
+                        }
+                        else
+                        {
+                            var product = new Lollipop(int.Parse(parts[0]));
+                            product.Name = parts[2].Trim();
+                            product.Price = decimal.Parse(parts[3].Trim());
+                            product.Shape = parts[5].Trim();
+                            products.Add(product);
+
+                            // if (!products.Any(p => p.Id == product.Id))
+                            // {
+                            //     products.Add(product);
+                            // }
                         }
 
                         line = reader.ReadLine();
@@ -41,11 +56,13 @@ namespace CandyShop.Controllers
                 Console.WriteLine("An error occurred while loading products: " + ex.Message);
             }
 
-            return _productList;
+            return products;
         }
 
         internal void AddProduct(Product product)
         {
+            var id = GetProducts().Count;
+
             try
             {
                 using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
@@ -55,7 +72,8 @@ namespace CandyShop.Controllers
                         outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
                     }
 
-                    outputFile.WriteLine(product.ToString());
+                    var csvLine = product.GetProductsForCsv(id);
+                    outputFile.WriteLine(csvLine);
                 }
 
                 Console.WriteLine("Product saved.");
