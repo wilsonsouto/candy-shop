@@ -86,22 +86,21 @@ namespace CandyShop.Views
             );
         }
 
-        internal static Product GetProductUpdateInput(Product product)
+        private static Product GetProductUpdateInput(Product product)
         {
             Console.WriteLine(
                 "You'll be prompted with the choice to update each property. Press enter for Yes and N for No"
             );
 
             product.Name = AnsiConsole.Confirm("Update name?")
-                ? GetValidInput(
+                ? Helpers.ProductHelpers.GetValidatedInput(
                     "Enter new product name: ",
-                    input => !string.IsNullOrEmpty(input) && input.Length >= 3,
                     "The product name must be at least 3 characters long and cannot be empty."
                 )
                 : product.Name;
 
             product.Price = AnsiConsole.Confirm("Update price?")
-                ? GetValidNumber(
+                ? Helpers.ProductHelpers.GetValidatedNumber(
                     "Enter the new product price: ",
                     "The product price must be a positive number greater than zero."
                 )
@@ -119,7 +118,7 @@ namespace CandyShop.Views
 
                 if (type == ProductType.ChocolateBar)
                 {
-                    var cocoa = GetValidNumber(
+                    var cocoa = Helpers.ProductHelpers.GetValidatedNumber(
                         "Enter the new cocoa percentage: ",
                         "The cocoa percentage must be a positive number greater than zero."
                     );
@@ -132,9 +131,8 @@ namespace CandyShop.Views
                     };
                 }
 
-                var shape = GetValidInput(
+                var shape = Helpers.ProductHelpers.GetValidatedInput(
                     "Enter the new shape of the lollipop: ",
-                    input => !string.IsNullOrEmpty(input) && input.Length >= 3,
                     "The shape must be at least 3 characters long and cannot be empty."
                 );
 
@@ -149,7 +147,7 @@ namespace CandyShop.Views
             return product;
         }
 
-        internal static void ViewProducts(List<Product> products)
+        private static void ViewProducts(List<Product> products)
         {
             var table = new Table();
             table.AddColumn("ID");
@@ -205,15 +203,14 @@ namespace CandyShop.Views
             return product;
         }
 
-        public static Product GetProductInput()
+        private static Product GetProductInput()
         {
-            var name = GetValidInput(
+            var name = Helpers.ProductHelpers.GetValidatedInput(
                 "Enter the product name: ",
-                input => !string.IsNullOrEmpty(input) && input.Length >= 3,
                 "The product name must be at least 3 characters long and cannot be empty."
             );
 
-            var price = GetValidNumber(
+            var price = Helpers.ProductHelpers.GetValidatedNumber(
                 "Enter the product price: ",
                 "The product price must be a positive number greater than zero."
             );
@@ -226,7 +223,7 @@ namespace CandyShop.Views
 
             if (type == ProductType.ChocolateBar)
             {
-                var cocoa = GetValidNumber(
+                var cocoa = Helpers.ProductHelpers.GetValidatedNumber(
                     "Enter the cocoa percentage: ",
                     "The cocoa percentage must be a positive number greater than zero."
                 );
@@ -239,9 +236,8 @@ namespace CandyShop.Views
                 };
             }
 
-            var shape = GetValidInput(
+            var shape = Helpers.ProductHelpers.GetValidatedInput(
                 "Enter the shape of the lollipop: ",
-                input => !string.IsNullOrEmpty(input) && input.Length >= 3,
                 "The shape must be at least 3 characters long and cannot be empty."
             );
 
@@ -251,53 +247,6 @@ namespace CandyShop.Views
                 Price = price,
                 Shape = shape,
             };
-        }
-
-        private static string GetValidInput(string prompt, Func<string, bool> validator, string errorMessage)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine();
-
-                if (!string.IsNullOrEmpty(input))
-                {
-                    try
-                    {
-                        if (!validator(input))
-                            throw new ArgumentException(errorMessage);
-
-                        return Helpers.ProductHelpers.CapitalizeFirstLetter(input);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
-        }
-
-        private static decimal GetValidNumber(string prompt, string errorMessage)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine();
-
-                try
-                {
-                    if (string.IsNullOrEmpty(input) || !decimal.TryParse(input, out var result) || result <= 0)
-                    {
-                        throw new ArgumentException(errorMessage);
-                    }
-
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
         }
     }
 }
