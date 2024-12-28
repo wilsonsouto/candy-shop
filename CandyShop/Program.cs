@@ -6,6 +6,8 @@ namespace CandyShop
     {
         private static void Main(string[] args)
         {
+            DataSeed.SeedData();
+
             ProductView.RunMainMenu();
         }
     }

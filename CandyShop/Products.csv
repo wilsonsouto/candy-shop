@@ -1,0 +1,11 @@
+Id, Type, Name, Price, CocoaPercentage, Shape
+1,0,Dark Delight,2.50,85
+2,0,Milk Magic,1.75,45
+3,0,White Wonder,2.00,30
+4,0,Hazelnut Heaven,3.00,60
+5,0,Caramel Crunch,2.80,50
+6,1,Cherry Twirl,0.75,,Round
+7,1,Rainbow Swirl,1.00,,Spiral
+8,1,Sour Apple,0.80,,Flat
+9,1,Bubblegum Blast,1.25,,Heart
+10,1,Tropical Twist,1.50,,Star

@@ -28,10 +28,10 @@ namespace CandyShop.Controllers
                             product.CocoaPercentage = int.Parse(parts[4].Trim());
                             products.Add(product);
 
-                            // if (!products.Any(p => p.Id == product.Id))
-                            // {
-                            //     products.Add(product);
-                            // }
+                            if (!products.Any(p => p.Id == product.Id))
+                            {
+                                products.Add(product);
+                            }
                         }
                         else
                         {
@@ -41,10 +41,10 @@ namespace CandyShop.Controllers
                             product.Shape = parts[5].Trim();
                             products.Add(product);
 
-                            // if (!products.Any(p => p.Id == product.Id))
-                            // {
-                            //     products.Add(product);
-                            // }
+                            if (!products.Any(p => p.Id == product.Id))
+                            {
+                                products.Add(product);
+                            }
                         }
 
                         line = reader.ReadLine();
@@ -61,7 +61,7 @@ namespace CandyShop.Controllers
 
         internal void AddProduct(Product product)
         {
-            var id = GetProducts().Count;
+            var id = GetProducts().Count + 1;
 
             try
             {
@@ -74,6 +74,31 @@ namespace CandyShop.Controllers
 
                     var csvLine = product.GetProductsForCsv(id);
                     outputFile.WriteLine(csvLine);
+                }
+
+                Console.WriteLine("Product saved.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while saving products: " + ex.Message);
+            }
+        }
+
+        internal void AddProducts(List<Product> products)
+        {
+            try
+            {
+                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
+                {
+                    outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
+
+                    foreach (var product in products)
+                    {
+                        var csvLine = product.GetProductsForCsv(product.Id);
+
+                        outputFile.WriteLine(csvLine);
+                    }
                 }
 
                 Console.WriteLine("Product saved.");
