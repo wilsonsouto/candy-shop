@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using CandyShop.Controllers;
 using CandyShop.Models;
 using Spectre.Console;
@@ -20,7 +21,8 @@ namespace CandyShop.Views
                     new SelectionPrompt<Enums.MainMenuOptions>()
                         .Title("What would you like to do?")
                         .AddChoices(
-                            Enums.MainMenuOptions.ViewProducts,
+                            Enums.MainMenuOptions.ViewProductsList,
+                            Enums.MainMenuOptions.ViewSingleProduct,
                             Enums.MainMenuOptions.AddProduct,
                             Enums.MainMenuOptions.DeleteProduct,
                             Enums.MainMenuOptions.UpdateProduct,
@@ -30,9 +32,13 @@ namespace CandyShop.Views
 
                 switch (usersChoice)
                 {
-                    case Enums.MainMenuOptions.ViewProducts:
+                    case Enums.MainMenuOptions.ViewProductsList:
                         var result = productController.GetProducts();
                         ViewProducts(result);
+                        break;
+                    case Enums.MainMenuOptions.ViewSingleProduct:
+                        var productChoice = GetProductChoice();
+                        ViewProduct(productChoice);
                         break;
                     case Enums.MainMenuOptions.AddProduct:
                         var product = GetProductInput();
@@ -51,19 +57,8 @@ namespace CandyShop.Views
 
                 Console.WriteLine("\nPress any key to go back on the menu:");
                 Console.ReadLine();
+                Console.Clear();
             }
-        }
-
-        internal static void ViewProducts(List<Product> products)
-        {
-            Console.WriteLine($"The product list contains {products.Count} product(s).");
-
-            Console.WriteLine(Separator);
-            foreach (Product product in products)
-            {
-                Console.WriteLine(product.GetProductsForCsv(product.Id));
-            }
-            Console.WriteLine(Separator);
         }
 
         private static void PrintHeader()
@@ -82,6 +77,62 @@ namespace CandyShop.Views
                     + $"Today's target achieved: {targetAchieved}\n"
                     + $"{Separator}\n"
             );
+        }
+
+        internal static void ViewProducts(List<Product> products)
+        {
+            AnsiConsole.MarkupLine($"[bold yellow]The product list contains {products.Count} product(s).[/]");
+
+            var table = new Table();
+            table.AddColumn("ID");
+            table.AddColumn("Type");
+            table.AddColumn("Name");
+            table.AddColumn("Price");
+            table.AddColumn("Cocoa Percentage");
+            table.AddColumn("Shape");
+
+            foreach (Product product in products)
+            {
+                var productType = product is ChocolateBar ? "Chocolate Bar" : "Lollipop";
+                var cocoaPercentage = product is ChocolateBar chocolateBar
+                    ? chocolateBar.CocoaPercentage.ToString()
+                    : "N/A";
+                var shape = product is Lollipop lollipop ? lollipop.Shape : "N/A";
+
+                table.AddRow(
+                    product.Id.ToString(),
+                    productType,
+                    product.Name,
+                    product.Price.ToString("C"),
+                    cocoaPercentage,
+                    shape
+                );
+            }
+
+            AnsiConsole.Write(table);
+        }
+
+        private static void ViewProduct(Product productChoice)
+        {
+            var panel = new Panel(productChoice.GetProductForPanel());
+            panel.Header = new PanelHeader("Product Info");
+            panel.Padding = new Padding(2, 2, 2, 2);
+
+            AnsiConsole.Write(panel);
+        }
+
+        private static Product GetProductChoice()
+        {
+            var productController = new ProductController();
+            var products = productController.GetProducts();
+            var productsArray = products.Select(x => x.Name).ToArray();
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<string>().Title("Select the product:").AddChoices(productsArray)
+            );
+
+            var product = products.Single(x => x.Name == option);
+
+            return product;
         }
 
         public static Product GetProductInput()
@@ -146,7 +197,7 @@ namespace CandyShop.Views
                         if (!validator(input))
                             throw new ArgumentException(errorMessage);
 
-                        return input;
+                        return Helpers.CapitalizeFirstLetter(input);
                     }
                     catch (Exception ex)
                     {

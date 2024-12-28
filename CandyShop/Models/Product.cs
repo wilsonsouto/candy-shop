@@ -27,6 +27,8 @@ namespace CandyShop.Models
         }
 
         internal abstract string GetProductsForCsv(int id);
+
+        internal abstract string GetProductForPanel();
     }
 
     internal class ChocolateBar : Product
@@ -48,6 +50,16 @@ namespace CandyShop.Models
         {
             return $"{id},{(int)Type},{Name},{Price},{CocoaPercentage}";
         }
+
+        internal override string GetProductForPanel()
+        {
+            return $@"
+Id: {Id}
+Type: {Type}
+Name: {Name}
+Price: {Price}
+Cocoa percentage: {CocoaPercentage}";
+        }
     }
 
     internal class Lollipop : Product
@@ -68,6 +80,16 @@ namespace CandyShop.Models
         internal override string GetProductsForCsv(int id)
         {
             return $"{id},{(int)Type},{Name},{Price},,{Shape}";
+        }
+
+        internal override string GetProductForPanel()
+        {
+            return $@"
+Id: {Id}
+Type: {Type}
+Name: {Name}
+Price: {Price}
+Shape: {Shape}";
         }
     }
 }

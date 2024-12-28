@@ -6,7 +6,8 @@ namespace CandyShop
     {
         private static void Main(string[] args)
         {
-            DataSeed.SeedData();
+            if (!File.Exists(Configuration.DocPath))
+                DataSeed.SeedData();
 
             ProductView.RunMainMenu();
         }

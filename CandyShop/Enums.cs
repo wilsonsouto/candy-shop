@@ -4,7 +4,9 @@ namespace CandyShop
     {
         internal enum MainMenuOptions
         {
-            ViewProducts,
+            ViewProductsList,
+
+            ViewSingleProduct,
 
             AddProduct,
 

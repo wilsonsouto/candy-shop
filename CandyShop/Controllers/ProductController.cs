@@ -27,11 +27,6 @@ namespace CandyShop.Controllers
                             product.Price = decimal.Parse(parts[3].Trim());
                             product.CocoaPercentage = int.Parse(parts[4].Trim());
                             products.Add(product);
-
-                            if (!products.Any(p => p.Id == product.Id))
-                            {
-                                products.Add(product);
-                            }
                         }
                         else
                         {
@@ -40,11 +35,6 @@ namespace CandyShop.Controllers
                             product.Price = decimal.Parse(parts[3].Trim());
                             product.Shape = parts[5].Trim();
                             products.Add(product);
-
-                            if (!products.Any(p => p.Id == product.Id))
-                            {
-                                products.Add(product);
-                            }
                         }
 
                         line = reader.ReadLine();
@@ -100,8 +90,6 @@ namespace CandyShop.Controllers
                         outputFile.WriteLine(csvLine);
                     }
                 }
-
-                Console.WriteLine("Product saved.");
                 return;
             }
             catch (Exception ex)
