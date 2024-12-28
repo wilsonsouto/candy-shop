@@ -79,7 +79,7 @@ namespace CandyShop.Controllers
         {
             try
             {
-                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
+                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath))
                 {
                     outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
 
@@ -98,8 +98,29 @@ namespace CandyShop.Controllers
             }
         }
 
-        internal void DeleteProduct() { }
+        internal void DeleteProduct(Product product)
+        {
+            var products = GetProducts();
+            var updatedProducts = products.Where(p => p.Id != product.Id).ToList();
 
-        internal void UpdateProduct() { }
+            AddProducts(updatedProducts);
+
+            Console.WriteLine("Product deleted.");
+        }
+
+        internal void UpdateProduct(Product product)
+        {
+            var products = GetProducts();
+
+            var updatedProducts = products
+                .Where(p => p.Id != product.Id) // Filter out the product with the same Id
+                .Concat([product]) // Add the updated product
+                .OrderBy(p => p.Id) // Sort by Id
+                .ToList();
+
+            AddProducts(updatedProducts);
+
+            Console.WriteLine("Product updated.");
+        }
     }
 }

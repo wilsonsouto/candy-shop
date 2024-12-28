@@ -1,4 +1,5 @@
 using CandyShop.Controllers;
+using CandyShop.Enums;
 using CandyShop.Models;
 using Spectre.Console;
 
@@ -6,8 +7,6 @@ namespace CandyShop.Views
 {
     internal class ProductView
     {
-        private const string Separator = "--------------------------------------------------";
-
         internal static void RunMainMenu()
         {
             ProductController productController = new();
@@ -17,15 +16,15 @@ namespace CandyShop.Views
             while (true)
             {
                 var usersChoice = AnsiConsole.Prompt(
-                    new SelectionPrompt<Enums.MainMenuOptions>()
+                    new SelectionPrompt<MainMenuOptions>()
                         .Title("What would you like to do?")
                         .AddChoices(
-                            Enums.MainMenuOptions.ViewProductsList,
-                            Enums.MainMenuOptions.ViewSingleProduct,
-                            Enums.MainMenuOptions.AddProduct,
-                            Enums.MainMenuOptions.DeleteProduct,
-                            Enums.MainMenuOptions.UpdateProduct,
-                            Enums.MainMenuOptions.QuitProgram
+                            MainMenuOptions.ViewProductsList,
+                            MainMenuOptions.ViewSingleProduct,
+                            MainMenuOptions.AddProduct,
+                            MainMenuOptions.DeleteProduct,
+                            MainMenuOptions.UpdateProduct,
+                            MainMenuOptions.QuitProgram
                         )
                 );
 
@@ -33,25 +32,28 @@ namespace CandyShop.Views
 
                 switch (usersChoice)
                 {
-                    case Enums.MainMenuOptions.ViewProductsList:
+                    case MainMenuOptions.ViewProductsList:
                         var result = productController.GetProducts();
                         ViewProducts(result);
                         break;
-                    case Enums.MainMenuOptions.ViewSingleProduct:
+                    case MainMenuOptions.ViewSingleProduct:
                         var productChoice = GetProductChoice();
                         ViewProduct(productChoice);
                         break;
-                    case Enums.MainMenuOptions.AddProduct:
+                    case MainMenuOptions.AddProduct:
                         var product = GetProductInput();
                         productController.AddProduct(product);
                         break;
-                    case Enums.MainMenuOptions.DeleteProduct:
-                        productController.DeleteProduct();
+                    case MainMenuOptions.DeleteProduct:
+                        var productToDelete = GetProductChoice();
+                        productController.DeleteProduct(productToDelete);
                         break;
-                    case Enums.MainMenuOptions.UpdateProduct:
-                        productController.UpdateProduct();
+                    case MainMenuOptions.UpdateProduct:
+                        var productToUpdate = GetProductChoice();
+                        var updatedProduct = GetProductUpdateInput(productToUpdate);
+                        productController.UpdateProduct(updatedProduct);
                         break;
-                    case Enums.MainMenuOptions.QuitProgram:
+                    case MainMenuOptions.QuitProgram:
                         Console.WriteLine("Exiting the program.");
                         return;
                 }
@@ -82,6 +84,69 @@ namespace CandyShop.Views
                     .Padding(2, 1, 2, 0)
                     .Border(BoxBorder.Rounded)
             );
+        }
+
+        internal static Product GetProductUpdateInput(Product product)
+        {
+            Console.WriteLine(
+                "You'll be prompted with the choice to update each property. Press enter for Yes and N for No"
+            );
+
+            product.Name = AnsiConsole.Confirm("Update name?")
+                ? GetValidInput(
+                    "Enter new product name: ",
+                    input => !string.IsNullOrEmpty(input) && input.Length >= 3,
+                    "The product name must be at least 3 characters long and cannot be empty."
+                )
+                : product.Name;
+
+            product.Price = AnsiConsole.Confirm("Update price?")
+                ? GetValidNumber(
+                    "Enter the new product price: ",
+                    "The product price must be a positive number greater than zero."
+                )
+                : product.Price;
+
+            var updateType = AnsiConsole.Confirm("Update category?");
+
+            if (updateType)
+            {
+                var type = AnsiConsole.Prompt(
+                    new SelectionPrompt<ProductType>()
+                        .Title("Product type: ")
+                        .AddChoices(ProductType.ChocolateBar, ProductType.Lollipop)
+                );
+
+                if (type == ProductType.ChocolateBar)
+                {
+                    var cocoa = GetValidNumber(
+                        "Enter the new cocoa percentage: ",
+                        "The cocoa percentage must be a positive number greater than zero."
+                    );
+
+                    return new ChocolateBar()
+                    {
+                        Name = product.Name,
+                        Price = product.Price,
+                        CocoaPercentage = (int)cocoa,
+                    };
+                }
+
+                var shape = GetValidInput(
+                    "Enter the new shape of the lollipop: ",
+                    input => !string.IsNullOrEmpty(input) && input.Length >= 3,
+                    "The shape must be at least 3 characters long and cannot be empty."
+                );
+
+                return new Lollipop()
+                {
+                    Name = product.Name,
+                    Price = product.Price,
+                    Shape = shape,
+                };
+            }
+
+            return product;
         }
 
         internal static void ViewProducts(List<Product> products)
@@ -154,12 +219,12 @@ namespace CandyShop.Views
             );
 
             var type = AnsiConsole.Prompt(
-                new SelectionPrompt<Enums.ProductType>()
+                new SelectionPrompt<ProductType>()
                     .Title("Select the product type: ")
-                    .AddChoices(Enums.ProductType.ChocolateBar, Enums.ProductType.Lollipop)
+                    .AddChoices(ProductType.ChocolateBar, ProductType.Lollipop)
             );
 
-            if (type == Enums.ProductType.ChocolateBar)
+            if (type == ProductType.ChocolateBar)
             {
                 var cocoa = GetValidNumber(
                     "Enter the cocoa percentage: ",
@@ -175,7 +240,7 @@ namespace CandyShop.Views
             }
 
             var shape = GetValidInput(
-                "Enter the shape of the lollipop:",
+                "Enter the shape of the lollipop: ",
                 input => !string.IsNullOrEmpty(input) && input.Length >= 3,
                 "The shape must be at least 3 characters long and cannot be empty."
             );
@@ -192,7 +257,7 @@ namespace CandyShop.Views
         {
             while (true)
             {
-                Console.WriteLine(prompt);
+                Console.Write(prompt);
                 var input = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(input))
@@ -216,7 +281,7 @@ namespace CandyShop.Views
         {
             while (true)
             {
-                Console.WriteLine(prompt);
+                Console.Write(prompt);
                 var input = Console.ReadLine();
 
                 try
