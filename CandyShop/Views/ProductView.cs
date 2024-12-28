@@ -132,11 +132,7 @@ namespace CandyShop.Views
             };
         }
 
-        private static string GetValidInput(
-            string prompt,
-            Func<string, bool> validator,
-            string errorMessage
-        )
+        private static string GetValidInput(string prompt, Func<string, bool> validator, string errorMessage)
         {
             while (true)
             {
@@ -169,11 +165,7 @@ namespace CandyShop.Views
 
                 try
                 {
-                    if (
-                        string.IsNullOrEmpty(input)
-                        || !decimal.TryParse(input, out var result)
-                        || result <= 0
-                    )
+                    if (string.IsNullOrEmpty(input) || !decimal.TryParse(input, out var result) || result <= 0)
                     {
                         throw new ArgumentException(errorMessage);
                     }

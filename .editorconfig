@@ -1,0 +1,26 @@
+# Define global rules for the project
+root = true
+
+# C# files
+[*.cs]
+# Indentation: 4 spaces
+indent_style = space
+indent_size = 4
+
+# Maximum line length (120 is a common recommendation for .NET projects)
+max_line_length = 120
+
+# Prevent automatic line breaks for single-line statements or blocks
+csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true
+
+# Formatting preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_between_methods = true
+csharp_space_around_binary_operators = true
+
+# Prefer full block syntax with braces, even for single-line blocks
+csharp_prefer_braces = always
+
+# Disable expression-bodied members to encourage regular method formatting
+csharp_style_expression_bodied_methods = false
