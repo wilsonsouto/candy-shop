@@ -17,15 +17,16 @@ namespace CandyShop.Views
             while (true)
             {
                 var usersChoice = AnsiConsole.Prompt(
-                      new SelectionPrompt<Enums.MainMenuOptions>()
-                          .Title("What would you like to do?")
-                          .AddChoices(
+                    new SelectionPrompt<Enums.MainMenuOptions>()
+                        .Title("What would you like to do?")
+                        .AddChoices(
                             Enums.MainMenuOptions.ViewProducts,
                             Enums.MainMenuOptions.AddProduct,
                             Enums.MainMenuOptions.DeleteProduct,
                             Enums.MainMenuOptions.UpdateProduct,
-                            Enums.MainMenuOptions.QuitProgram));
-
+                            Enums.MainMenuOptions.QuitProgram
+                        )
+                );
 
                 switch (usersChoice)
                 {
@@ -72,13 +73,15 @@ namespace CandyShop.Views
             decimal todaysProfit = 5.5m;
             bool targetAchieved = false;
 
-            Console.WriteLine($"{shopName}\n" +
-            $"{Separator}\n" +
-            $"Today's date: {currentDate:dd/MM/yyyy}\n" +
-            $"Days since opening: {Helpers.GetDaysSinceOpening()}\n" +
-            $"Today's profit: $ {todaysProfit}\n" +
-            $"Today's target achieved: {targetAchieved}\n" +
-            $"{Separator}\n");
+            Console.WriteLine(
+                $"{shopName}\n"
+                    + $"{Separator}\n"
+                    + $"Today's date: {currentDate:dd/MM/yyyy}\n"
+                    + $"Days since opening: {Helpers.GetDaysSinceOpening()}\n"
+                    + $"Today's profit: $ {todaysProfit}\n"
+                    + $"Today's target achieved: {targetAchieved}\n"
+                    + $"{Separator}\n"
+            );
         }
 
         public static Product GetProductInput()
@@ -95,12 +98,10 @@ namespace CandyShop.Views
             );
 
             var type = AnsiConsole.Prompt(
-                  new SelectionPrompt<Enums.ProductType>()
-                  .Title("Select the product type: ")
-                  .AddChoices(
-                      Enums.ProductType.ChocolateBar,
-                      Enums.ProductType.Lollipop)
-              );
+                new SelectionPrompt<Enums.ProductType>()
+                    .Title("Select the product type: ")
+                    .AddChoices(Enums.ProductType.ChocolateBar, Enums.ProductType.Lollipop)
+            );
 
             if (type == Enums.ProductType.ChocolateBar)
             {
@@ -113,7 +114,7 @@ namespace CandyShop.Views
                 {
                     Name = name,
                     Price = price,
-                    CocoaPercentage = (int)cocoa
+                    CocoaPercentage = (int)cocoa,
                 };
             }
 
@@ -131,7 +132,11 @@ namespace CandyShop.Views
             };
         }
 
-        private static string GetValidInput(string prompt, Func<string, bool> validator, string errorMessage)
+        private static string GetValidInput(
+            string prompt,
+            Func<string, bool> validator,
+            string errorMessage
+        )
         {
             while (true)
             {
@@ -164,7 +169,11 @@ namespace CandyShop.Views
 
                 try
                 {
-                    if (string.IsNullOrEmpty(input) || !decimal.TryParse(input, out var result) || result <= 0)
+                    if (
+                        string.IsNullOrEmpty(input)
+                        || !decimal.TryParse(input, out var result)
+                        || result <= 0
+                    )
                     {
                         throw new ArgumentException(errorMessage);
                     }

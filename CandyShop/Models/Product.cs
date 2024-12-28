@@ -38,7 +38,8 @@ namespace CandyShop.Models
 
         internal ChocolateBar() { }
 
-        internal ChocolateBar(int id) : base(id)
+        internal ChocolateBar(int id)
+            : base(id)
         {
             Type = ProductType.ChocolateBar;
         }
@@ -50,7 +51,8 @@ namespace CandyShop.Models
 
         internal Lollipop() { }
 
-        internal Lollipop(int id) : base(id)
+        internal Lollipop(int id)
+            : base(id)
         {
             Type = ProductType.Lollipop;
         }

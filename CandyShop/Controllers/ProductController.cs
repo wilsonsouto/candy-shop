@@ -61,7 +61,6 @@ namespace CandyShop.Controllers
                 Console.WriteLine("Product saved.");
                 return;
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("An error occurred while saving products: " + ex.Message);
