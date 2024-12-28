@@ -29,6 +29,8 @@ namespace CandyShop.Views
                         )
                 );
 
+                Console.Clear();
+
                 switch (usersChoice)
                 {
                     case Enums.MainMenuOptions.ViewProductsList:
@@ -67,21 +69,23 @@ namespace CandyShop.Views
             decimal todaysProfit = 5.5m;
             bool targetAchieved = false;
 
-            Console.WriteLine(
-                $"{shopName}\n"
-                    + $"{Separator}\n"
-                    + $"Today's date: {currentDate:dd/MM/yyyy}\n"
-                    + $"Days since opening: {Helpers.ProductHelpers.GetDaysSinceOpening()}\n"
-                    + $"Today's profit: $ {todaysProfit}\n"
-                    + $"Today's target achieved: {targetAchieved}\n"
-                    + $"{Separator}\n"
+            AnsiConsole.Write(
+                new Panel(
+                    new Markup(
+                        $"Today's date: [bold]{currentDate:dd/MM/yyyy}[/]\n"
+                            + $"Days since opening: [bold]{Helpers.ProductHelpers.GetDaysSinceOpening()}[/]\n"
+                            + $"Today's profit: [bold]$ {todaysProfit}[/]\n"
+                            + $"Today's target achieved: [bold]{targetAchieved}[/]\n"
+                    )
+                )
+                    .Header($"[bold blue]{shopName}[/]")
+                    .Padding(2, 1, 2, 0)
+                    .Border(BoxBorder.Rounded)
             );
         }
 
         internal static void ViewProducts(List<Product> products)
         {
-            AnsiConsole.MarkupLine($"[bold yellow]The product list contains {products.Count} product(s).[/]");
-
             var table = new Table();
             table.AddColumn("ID");
             table.AddColumn("Type");
@@ -108,14 +112,16 @@ namespace CandyShop.Views
                 );
             }
 
+            table.Border(TableBorder.Rounded);
             AnsiConsole.Write(table);
         }
 
         private static void ViewProduct(Product productChoice)
         {
             var panel = new Panel(productChoice.GetProductForPanel());
-            panel.Header = new PanelHeader("Product Info");
-            panel.Padding = new Padding(2, 2, 2, 2);
+            panel.Header = new PanelHeader($"[bold blue]Product Info[/]");
+            panel.Padding = new Padding(2, 0, 2, 1);
+            panel.Border(BoxBorder.Rounded);
 
             AnsiConsole.Write(panel);
         }
