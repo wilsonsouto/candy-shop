@@ -1,5 +1,5 @@
+using CandyShop.Enums;
 using CandyShop.Models;
-using static CandyShop.Enums;
 
 namespace CandyShop.Controllers
 {

@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using CandyShop.Controllers;
 using CandyShop.Models;
 using Spectre.Console;
@@ -72,7 +71,7 @@ namespace CandyShop.Views
                 $"{shopName}\n"
                     + $"{Separator}\n"
                     + $"Today's date: {currentDate:dd/MM/yyyy}\n"
-                    + $"Days since opening: {Helpers.GetDaysSinceOpening()}\n"
+                    + $"Days since opening: {Helpers.ProductHelpers.GetDaysSinceOpening()}\n"
                     + $"Today's profit: $ {todaysProfit}\n"
                     + $"Today's target achieved: {targetAchieved}\n"
                     + $"{Separator}\n"
@@ -197,7 +196,7 @@ namespace CandyShop.Views
                         if (!validator(input))
                             throw new ArgumentException(errorMessage);
 
-                        return Helpers.CapitalizeFirstLetter(input);
+                        return Helpers.ProductHelpers.CapitalizeFirstLetter(input);
                     }
                     catch (Exception ex)
                     {
