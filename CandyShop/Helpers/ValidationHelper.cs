@@ -6,7 +6,7 @@ namespace CandyShop.Helpers
     {
         public static bool IsStringValid(string? input)
         {
-            return !string.IsNullOrEmpty(input) && input.Length >= 3;
+            return !string.IsNullOrEmpty(input) && input.Length >= 3 && input.Length <= 20;
         }
 
         public static PriceValidationResponse IsPriceValid(string? input)
