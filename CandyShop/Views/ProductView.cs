@@ -1,5 +1,6 @@
 using CandyShop.Controllers;
 using CandyShop.Enums;
+using CandyShop.Helpers;
 using CandyShop.Models;
 using Spectre.Console;
 
@@ -75,7 +76,7 @@ namespace CandyShop.Views
                 new Panel(
                     new Markup(
                         $"Today's date: [bold]{currentDate:dd/MM/yyyy}[/]\n"
-                            + $"Days since opening: [bold]{Helpers.ProductHelpers.GetDaysSinceOpening()}[/]\n"
+                            + $"Days since opening: [bold]{ProductHelper.GetDaysSinceOpening()}[/]\n"
                             + $"Today's profit: [bold]$ {todaysProfit}[/]\n"
                             + $"Today's target achieved: [bold]{targetAchieved}[/]\n"
                     )
@@ -84,67 +85,6 @@ namespace CandyShop.Views
                     .Padding(2, 1, 2, 0)
                     .Border(BoxBorder.Rounded)
             );
-        }
-
-        private static Product GetProductUpdateInput(Product product)
-        {
-            Console.WriteLine(
-                "You'll be prompted with the choice to update each property. Press enter for Yes and N for No"
-            );
-
-            product.Name = AnsiConsole.Confirm("Update name?")
-                ? Helpers.ProductHelpers.GetValidatedInput(
-                    "Enter new product name: ",
-                    "The product name must be at least 3 characters long and cannot be empty."
-                )
-                : product.Name;
-
-            product.Price = AnsiConsole.Confirm("Update price?")
-                ? Helpers.ProductHelpers.GetValidatedNumber(
-                    "Enter the new product price: ",
-                    "The product price must be a positive number greater than zero."
-                )
-                : product.Price;
-
-            var updateType = AnsiConsole.Confirm("Update category?");
-
-            if (updateType)
-            {
-                var type = AnsiConsole.Prompt(
-                    new SelectionPrompt<ProductType>()
-                        .Title("Product type: ")
-                        .AddChoices(ProductType.ChocolateBar, ProductType.Lollipop)
-                );
-
-                if (type == ProductType.ChocolateBar)
-                {
-                    var cocoa = Helpers.ProductHelpers.GetValidatedNumber(
-                        "Enter the new cocoa percentage: ",
-                        "The cocoa percentage must be a positive number greater than zero."
-                    );
-
-                    return new ChocolateBar()
-                    {
-                        Name = product.Name,
-                        Price = product.Price,
-                        CocoaPercentage = (int)cocoa,
-                    };
-                }
-
-                var shape = Helpers.ProductHelpers.GetValidatedInput(
-                    "Enter the new shape of the lollipop: ",
-                    "The shape must be at least 3 characters long and cannot be empty."
-                );
-
-                return new Lollipop()
-                {
-                    Name = product.Name,
-                    Price = product.Price,
-                    Shape = shape,
-                };
-            }
-
-            return product;
         }
 
         private static void ViewProducts(List<Product> products)
@@ -195,7 +135,7 @@ namespace CandyShop.Views
             var products = productController.GetProducts();
             var productsArray = products.Select(x => x.Name).ToArray();
             var option = AnsiConsole.Prompt(
-                new SelectionPrompt<string>().Title("Select the product:").AddChoices(productsArray)
+                new SelectionPrompt<string>().Title("Select the product: ").AddChoices(productsArray)
             );
 
             var product = products.Single(x => x.Name == option);
@@ -205,15 +145,25 @@ namespace CandyShop.Views
 
         private static Product GetProductInput()
         {
-            var name = Helpers.ProductHelpers.GetValidatedInput(
-                "Enter the product name: ",
-                "The product name must be at least 3 characters long and cannot be empty."
-            );
+            Console.Write(MessageHelper.Name);
+            var nameInput = Console.ReadLine();
 
-            var price = Helpers.ProductHelpers.GetValidatedNumber(
-                "Enter the product price: ",
-                "The product price must be a positive number greater than zero."
-            );
+            while (!ValidationHelper.IsStringValid(nameInput))
+            {
+                Console.Write(MessageHelper.InvalidName);
+                nameInput = Console.ReadLine();
+            }
+
+            Console.Write(MessageHelper.Price);
+            var priceInput = Console.ReadLine();
+            var priceValidation = ValidationHelper.IsPriceValid(priceInput);
+
+            while (!priceValidation.IsValid)
+            {
+                Console.Write(priceValidation.ErrorMessage);
+                priceInput = Console.ReadLine();
+                priceValidation = ValidationHelper.IsPriceValid(priceInput);
+            }
 
             var type = AnsiConsole.Prompt(
                 new SelectionPrompt<ProductType>()
@@ -223,30 +173,125 @@ namespace CandyShop.Views
 
             if (type == ProductType.ChocolateBar)
             {
-                var cocoa = Helpers.ProductHelpers.GetValidatedNumber(
-                    "Enter the cocoa percentage: ",
-                    "The cocoa percentage must be a positive number greater than zero."
-                );
+                Console.Write(MessageHelper.Cocoa);
+                var cocoaInput = Console.ReadLine();
+                var cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
+
+                while (!cocoaValidation.IsValid)
+                {
+                    Console.WriteLine(cocoaValidation.ErrorMessage);
+                    cocoaInput = Console.ReadLine();
+                    cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
+                }
 
                 return new ChocolateBar()
                 {
-                    Name = name,
-                    Price = price,
-                    CocoaPercentage = (int)cocoa,
+                    Name = nameInput!,
+                    Price = priceValidation.Price,
+                    CocoaPercentage = cocoaValidation.CocoaPercentage,
                 };
             }
 
-            var shape = Helpers.ProductHelpers.GetValidatedInput(
-                "Enter the shape of the lollipop: ",
-                "The shape must be at least 3 characters long and cannot be empty."
-            );
+            Console.Write(MessageHelper.Shape);
+            var shape = Console.ReadLine();
+
+            while (!ValidationHelper.IsStringValid(shape))
+            {
+                Console.Write(MessageHelper.InvalidShape);
+                shape = Console.ReadLine();
+            }
 
             return new Lollipop()
             {
-                Name = name,
-                Price = price,
-                Shape = shape,
+                Name = nameInput!,
+                Price = priceValidation.Price,
+                Shape = shape!,
             };
+        }
+
+        private static Product GetProductUpdateInput(Product product)
+        {
+            Console.WriteLine(
+                "You'll be prompted with the choice to update each property. Press enter for Yes and N for No"
+            );
+
+            var nameInput = AnsiConsole.Confirm("Update name?")
+                ? AnsiConsole.Ask<string>(MessageHelper.Name)
+                : product.Name;
+
+            while (!ValidationHelper.IsStringValid(nameInput))
+            {
+                Console.Write(MessageHelper.InvalidName);
+                nameInput = Console.ReadLine()!;
+            }
+
+            var price = AnsiConsole.Confirm("Update price?");
+
+            if (price)
+            {
+                Console.Write(MessageHelper.Price);
+                var priceInput = Console.ReadLine();
+                var priceValidation = ValidationHelper.IsPriceValid(priceInput);
+
+                while (!priceValidation.IsValid)
+                {
+                    Console.Write(priceValidation.ErrorMessage);
+                    priceInput = Console.ReadLine();
+                    priceValidation = ValidationHelper.IsPriceValid(priceInput);
+                }
+
+                product.Price = priceValidation.Price;
+            }
+
+            var updateType = AnsiConsole.Confirm("Update category?");
+
+            if (updateType)
+            {
+                var type = AnsiConsole.Prompt(
+                    new SelectionPrompt<ProductType>()
+                        .Title("Product type: ")
+                        .AddChoices(ProductType.ChocolateBar, ProductType.Lollipop)
+                );
+
+                if (type == ProductType.ChocolateBar)
+                {
+                    Console.Write(MessageHelper.Cocoa);
+                    var cocoaInput = Console.ReadLine();
+                    var cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
+
+                    while (!cocoaValidation.IsValid)
+                    {
+                        Console.WriteLine(cocoaValidation.ErrorMessage);
+                        cocoaInput = Console.ReadLine();
+                        cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
+                    }
+
+                    return new ChocolateBar()
+                    {
+                        Name = product.Name,
+                        Price = product.Price,
+                        CocoaPercentage = cocoaValidation.CocoaPercentage,
+                    };
+                }
+
+                Console.Write(MessageHelper.Shape);
+                var shapeInput = Console.ReadLine();
+
+                while (!ValidationHelper.IsStringValid(shapeInput))
+                {
+                    Console.Write(MessageHelper.InvalidShape);
+                    shapeInput = Console.ReadLine();
+                }
+
+                return new Lollipop()
+                {
+                    Name = product.Name,
+                    Price = product.Price,
+                    Shape = shapeInput!,
+                };
+            }
+
+            return product;
         }
     }
 }

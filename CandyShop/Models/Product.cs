@@ -6,7 +6,13 @@ namespace CandyShop.Models
     {
         internal int Id { get; set; }
 
-        internal string Name { get; set; } = "";
+        private string _name = "";
+
+        internal string Name
+        {
+            get => _name;
+            set => _name = Helpers.ProductHelper.CapitalizeFirstLetter(value);
+        }
 
         internal decimal Price { get; set; }
 

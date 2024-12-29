@@ -4,7 +4,13 @@ namespace CandyShop.Models
 {
     internal class Lollipop : Product
     {
-        internal string Shape { get; set; } = "";
+        internal string _shape { get; set; } = "";
+
+        internal string Shape
+        {
+            get => _shape;
+            set => _shape = Helpers.ProductHelper.CapitalizeFirstLetter(value);
+        }
 
         internal Lollipop()
         {
