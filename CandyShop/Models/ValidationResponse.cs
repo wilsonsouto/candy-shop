@@ -2,7 +2,7 @@ namespace CandyShop.Models
 {
     public class ValidationResponse
     {
-        internal bool IsValid { get; set; }
+        public bool IsValid { get; set; }
 
         internal string ErrorMessage { get; set; } = "";
     }
