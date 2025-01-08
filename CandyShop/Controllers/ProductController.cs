@@ -1,10 +1,41 @@
 using CandyShop.Enums;
 using CandyShop.Models;
+using MySqlConnector;
 
 namespace CandyShop.Controllers
 {
     internal class ProductController
     {
+        private const string ConnectionString = "Server=localhost;Database=CandyShop;User=root;Password=1234;";
+
+        internal void CreateDatabase()
+        {
+            using var connection = new MySqlConnection(ConnectionString);
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Database connection established.");
+
+                // SQL query to create the Product table
+                string createTableQuery = @"
+        CREATE TABLE IF NOT EXISTS Product (
+            Id INT AUTO_INCREMENT PRIMARY KEY,
+            Name VARCHAR(255) NOT NULL,
+            Price DECIMAL(10, 2) NOT NULL,
+            Type INT NOT NULL
+        );";
+
+                using var command = new MySqlCommand(createTableQuery, connection);
+                command.ExecuteNonQuery();
+
+                Console.WriteLine("Table 'Product' created successfully.\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while creating the table: {ex.Message}\n");
+            }
+        }
+
         internal List<Product> GetProducts()
         {
             var products = new List<Product>();
