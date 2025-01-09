@@ -1,4 +1,5 @@
 using CandyShop.Enums;
+using MySqlConnector;
 
 namespace CandyShop.Models
 {
@@ -35,5 +36,9 @@ namespace CandyShop.Models
         internal abstract string GetProductsForCsv(int id);
 
         internal abstract string GetProductForPanel();
+
+        internal abstract string GetInsertQuery();
+
+        internal abstract void AddParameters(MySqlCommand cmd);
     }
 }

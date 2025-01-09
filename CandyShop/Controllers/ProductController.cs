@@ -84,23 +84,18 @@ namespace CandyShop.Controllers
 
         internal void AddProduct(Product product)
         {
-            var id = GetProducts().Count + 1;
-
             try
             {
-                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
-                {
-                    if (outputFile.BaseStream.Length <= 3)
-                    {
-                        outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
-                    }
+                using var connection = new MySqlConnection(ConnectionString);
+                connection.Open();
 
-                    var csvLine = product.GetProductsForCsv(id);
-                    outputFile.WriteLine(csvLine);
-                }
+                using var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = product.GetInsertQuery();
+                product.AddParameters(tableCmd);
+
+                tableCmd.ExecuteNonQuery();
 
                 Console.WriteLine("Product saved.");
-                return;
             }
             catch (Exception ex)
             {
@@ -112,17 +107,7 @@ namespace CandyShop.Controllers
         {
             try
             {
-                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath))
-                {
-                    outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
 
-                    foreach (var product in products)
-                    {
-                        var csvLine = product.GetProductsForCsv(product.Id);
-
-                        outputFile.WriteLine(csvLine);
-                    }
-                }
                 return;
             }
             catch (Exception ex)

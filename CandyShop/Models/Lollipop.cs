@@ -1,4 +1,5 @@
 using CandyShop.Enums;
+using MySqlConnector;
 
 namespace CandyShop.Models
 {
@@ -36,6 +37,19 @@ Type: {Type}
 Name: {Name}
 Price: {Price}
 Shape: {Shape}";
+        }
+
+        internal override string GetInsertQuery()
+        {
+            return $@"INSERT INTO Product (name, price, type, shape) VALUES (@Name, @Price, @Type, @Shape)";
+        }
+
+        internal override void AddParameters(MySqlCommand cmd)
+        {
+            cmd.Parameters.AddWithValue("@Name", Name);
+            cmd.Parameters.AddWithValue("@Price", Price);
+            cmd.Parameters.AddWithValue("@Type", (int)Type);
+            cmd.Parameters.AddWithValue("@Shape", Shape);
         }
     }
 }
