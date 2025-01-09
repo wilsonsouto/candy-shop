@@ -20,8 +20,10 @@ namespace CandyShop.Controllers
                 string createTableQuery = @"
         CREATE TABLE IF NOT EXISTS Product (
             Id INT AUTO_INCREMENT PRIMARY KEY,
-            Name VARCHAR(255) NOT NULL,
+            Name VARCHAR(20) NOT NULL,
             Price DECIMAL(10, 2) NOT NULL,
+            CocoaPercentage INT NULL,
+            Shape VARCHAR(20) NULL,
             Type INT NOT NULL
         );";
 
