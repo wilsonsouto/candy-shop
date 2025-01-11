@@ -7,7 +7,7 @@ namespace CandyShop.Controllers
     internal class ProductController
     {
         readonly DatabaseHandler databaseHandler = new DatabaseHandler();
-        
+
         internal List<Product> GetProducts()
         {
             var products = new List<Product>();
@@ -81,7 +81,16 @@ namespace CandyShop.Controllers
         {
             try
             {
-
+                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
+                {
+                    outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
+                    foreach (var product in products)
+                    {
+                        var csvLine = product.GetProductsForCsv(product.Id);
+                        outputFile.WriteLine(csvLine);
+                    }
+                }
+                Console.WriteLine("Product saved.");
                 return;
             }
             catch (Exception ex)
