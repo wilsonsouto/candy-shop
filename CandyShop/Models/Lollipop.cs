@@ -51,5 +51,10 @@ Shape: {Shape}";
             cmd.Parameters.AddWithValue("@Type", (int)Type);
             cmd.Parameters.AddWithValue("@Shape", Shape);
         }
+
+        internal override string GetUpdateQuery()
+        {
+            return $@"UPDATE Product SET name = @Name, price = @Price, type = 1, shape = @Shape WHERE Id = {Id}";
+        }
     }
 }

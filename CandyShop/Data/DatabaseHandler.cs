@@ -49,10 +49,7 @@ internal class DatabaseHandler
                 createCommand.ExecuteNonQuery();
 
                 Console.WriteLine("Table 'Product' created successfully.\n");
-            }
-            else
-            {
-                Console.WriteLine("Table 'Product' already exists.\n");
+                return;
             }
         }
         catch (Exception ex)

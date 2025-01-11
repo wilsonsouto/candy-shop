@@ -73,7 +73,7 @@ namespace CandyShop.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while saving products: " + ex.Message);
+                Console.WriteLine("An error occurred while saving product: " + ex.Message);
             }
         }
 
@@ -101,27 +101,41 @@ namespace CandyShop.Controllers
 
         internal void DeleteProduct(Product product)
         {
-            var products = GetProducts();
-            var updatedProducts = products.Where(p => p.Id != product.Id).ToList();
+            try
+            {
+                using var connection = new MySqlConnection(databaseHandler.ConnectionString);
+                connection.Open();
 
-            AddProducts(updatedProducts);
+                using var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"DELETE FROM Product Where Id = {product.Id}";
 
-            Console.WriteLine("Product deleted.");
+                tableCmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("There was an error deleting the product: " + ex.Message);
+            }
         }
 
         internal void UpdateProduct(Product product)
         {
-            var products = GetProducts();
+            try
+            {
+                using var connection = new MySqlConnection(databaseHandler.ConnectionString);
+                connection.Open();
 
-            var updatedProducts = products
-                .Where(p => p.Id != product.Id) // Filter out the product with the same Id
-                .Concat([product]) // Add the updated product
-                .OrderBy(p => p.Id) // Sort by Id
-                .ToList();
+                using var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = product.GetUpdateQuery();
+                product.AddParameters(tableCmd);
 
-            AddProducts(updatedProducts);
+                tableCmd.ExecuteNonQuery();
 
-            Console.WriteLine("Product updated.");
+                Console.WriteLine("Product updated.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while updating product: " + ex.Message);
+            }
         }
     }
 }

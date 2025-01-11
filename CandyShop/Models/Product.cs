@@ -1,4 +1,5 @@
 using CandyShop.Enums;
+using CandyShop.Helpers;
 using MySqlConnector;
 
 namespace CandyShop.Models
@@ -12,7 +13,10 @@ namespace CandyShop.Models
         internal string Name
         {
             get => _name;
-            set => _name = Helpers.ProductHelper.CapitalizeFirstLetter(value);
+            set
+            {
+                _name = ProductHelper.CapitalizeFirstLetter(value);
+            }
         }
 
         internal decimal Price { get; set; }
@@ -38,6 +42,8 @@ namespace CandyShop.Models
         internal abstract string GetProductForPanel();
 
         internal abstract string GetInsertQuery();
+
+        internal abstract string GetUpdateQuery();
 
         internal abstract void AddParameters(MySqlCommand cmd);
     }

@@ -215,33 +215,15 @@ namespace CandyShop.Views
                 "You'll be prompted with the choice to update each property. Press enter for Yes and N for No"
             );
 
-            var nameInput = AnsiConsole.Confirm("Update name?")
+            product.Name = AnsiConsole.Confirm("Update name?")
                 ? AnsiConsole.Ask<string>(MessageHelper.Name)
                 : product.Name;
 
-            while (!ValidationHelper.IsStringValid(nameInput))
-            {
-                Console.Write(MessageHelper.InvalidName);
-                nameInput = Console.ReadLine()!;
-            }
 
-            var price = AnsiConsole.Confirm("Update price?");
+            product.Price = AnsiConsole.Confirm("Update price?")
+                ? AnsiConsole.Ask<decimal>(MessageHelper.Price)
+                : product.Price;
 
-            if (price)
-            {
-                Console.Write(MessageHelper.Price);
-                var priceInput = Console.ReadLine();
-                var priceValidation = ValidationHelper.IsPriceValid(priceInput);
-
-                while (!priceValidation.IsValid)
-                {
-                    Console.Write(priceValidation.ErrorMessage);
-                    priceInput = Console.ReadLine();
-                    priceValidation = ValidationHelper.IsPriceValid(priceInput);
-                }
-
-                product.Price = priceValidation.Price;
-            }
 
             var updateType = AnsiConsole.Confirm("Update category?");
 
@@ -250,44 +232,32 @@ namespace CandyShop.Views
                 var type = AnsiConsole.Prompt(
                     new SelectionPrompt<ProductType>()
                         .Title("Product type: ")
-                        .AddChoices(ProductType.ChocolateBar, ProductType.Lollipop)
+                        .AddChoices(
+                            ProductType.ChocolateBar,
+                            ProductType.Lollipop)
                 );
 
                 if (type == ProductType.ChocolateBar)
                 {
                     Console.Write(MessageHelper.Cocoa);
-                    var cocoaInput = Console.ReadLine();
-                    var cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
+                    var cocoa = int.Parse(Console.ReadLine()!);
 
-                    while (!cocoaValidation.IsValid)
-                    {
-                        Console.WriteLine(cocoaValidation.ErrorMessage);
-                        cocoaInput = Console.ReadLine();
-                        cocoaValidation = ValidationHelper.IsCocoaValid(cocoaInput);
-                    }
-
-                    return new ChocolateBar()
+                    return new ChocolateBar(product.Id)
                     {
                         Name = product.Name,
                         Price = product.Price,
-                        CocoaPercentage = cocoaValidation.CocoaPercentage,
+                        CocoaPercentage = cocoa,
                     };
                 }
 
                 Console.Write(MessageHelper.Shape);
-                var shapeInput = Console.ReadLine();
+                var shape = Console.ReadLine();
 
-                while (!ValidationHelper.IsStringValid(shapeInput))
-                {
-                    Console.Write(MessageHelper.InvalidShape);
-                    shapeInput = Console.ReadLine();
-                }
-
-                return new Lollipop()
+                return new Lollipop(product.Id)
                 {
                     Name = product.Name,
                     Price = product.Price,
-                    Shape = shapeInput!,
+                    Shape = shape!,
                 };
             }
 

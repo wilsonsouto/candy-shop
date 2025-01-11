@@ -45,5 +45,11 @@ Cocoa percentage: {CocoaPercentage}";
             cmd.Parameters.AddWithValue("@Type", (int)Type);
             cmd.Parameters.AddWithValue("@CocoaPercentage", CocoaPercentage);
         }
+
+        internal override string GetUpdateQuery()
+        {
+            return $@"UPDATE Product SET name = @Name, price = @Price, type = 0, cocoaPercentage = @CocoaPercentage WHERE Id = {Id}";
+        }
+
     }
 }
