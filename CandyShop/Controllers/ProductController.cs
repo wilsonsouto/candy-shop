@@ -77,27 +77,27 @@ namespace CandyShop.Controllers
             }
         }
 
-        internal void AddProducts(List<Product> products)
-        {
-            try
-            {
-                using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
-                {
-                    outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
-                    foreach (var product in products)
-                    {
-                        var csvLine = product.GetProductsForCsv(product.Id);
-                        outputFile.WriteLine(csvLine);
-                    }
-                }
-                Console.WriteLine("Product saved.");
-                return;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred while saving products: " + ex.Message);
-            }
-        }
+        // internal void AddProducts(List<Product> products)
+        // {
+        //     try
+        //     {
+        //         using (StreamWriter outputFile = new StreamWriter(Configuration.DocPath, true))
+        //         {
+        //             outputFile.WriteLine("Id, Type, Name, Price, CocoaPercentage, Shape");
+        //             foreach (var product in products)
+        //             {
+        //                 var csvLine = product.GetProductsForCsv(product.Id);
+        //                 outputFile.WriteLine(csvLine);
+        //             }
+        //         }
+        //         Console.WriteLine("Product saved.");
+        //         return;
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine("An error occurred while saving products: " + ex.Message);
+        //     }
+        // }
 
         internal void DeleteProduct(Product product)
         {

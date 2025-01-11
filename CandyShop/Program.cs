@@ -9,8 +9,8 @@ namespace CandyShop
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.CreateDatabase();
 
-            if (!File.Exists(Configuration.DocPath))
-                DataSeed.SeedData();
+            // if (!File.Exists(Configuration.DocPath))
+            //     DataSeed.SeedData();
 
             ProductView.RunMainMenu();
         }
