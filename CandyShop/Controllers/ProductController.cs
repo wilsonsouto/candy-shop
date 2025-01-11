@@ -6,60 +6,15 @@ namespace CandyShop.Controllers
 {
     internal class ProductController
     {
-        private const string ConnectionString = "Server=localhost;Database=CandyShop;User=root;Password=1234;";
-
-        internal void CreateDatabase()
-        {
-            using var connection = new MySqlConnection(ConnectionString);
-            try
-            {
-                connection.Open();
-                Console.WriteLine("Database connection established.");
-
-                string checkTableExistsQuery = @"
-                    SELECT COUNT(*)
-                    FROM information_schema.tables
-                    WHERE table_schema = DATABASE() AND table_name = 'Product';";
-
-                using var checkCommand = new MySqlCommand(checkTableExistsQuery, connection);
-                bool tableExists = Convert.ToInt32(checkCommand.ExecuteScalar()) > 0;
-
-                if (!tableExists)
-                {
-                    string createTableQuery = @"
-                        CREATE TABLE Product (
-                        Id INT AUTO_INCREMENT PRIMARY KEY,
-                        Name VARCHAR(20) NOT NULL,
-                        Price DECIMAL(10, 2) NOT NULL,
-                        CocoaPercentage INT NULL,
-                        Shape VARCHAR(20) NULL,
-                        Type INT NOT NULL
-                    );";
-
-                    using var createCommand = new MySqlCommand(createTableQuery, connection);
-                    createCommand.ExecuteNonQuery();
-
-                    Console.WriteLine("Table 'Product' created successfully.\n");
-                }
-                else
-                {
-                    Console.WriteLine("Table 'Product' already exists.\n");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error while creating the table: {ex.Message}\n");
-            }
-        }
-
-
+        readonly DatabaseHandler databaseHandler = new DatabaseHandler();
+        
         internal List<Product> GetProducts()
         {
             var products = new List<Product>();
 
             try
             {
-                using var connection = new MySqlConnection(ConnectionString);
+                using var connection = new MySqlConnection(databaseHandler.ConnectionString);
                 connection.Open();
 
                 using var tableCmd = connection.CreateCommand();
@@ -105,7 +60,7 @@ namespace CandyShop.Controllers
         {
             try
             {
-                using var connection = new MySqlConnection(ConnectionString);
+                using var connection = new MySqlConnection(databaseHandler.ConnectionString);
                 connection.Open();
 
                 using var tableCmd = connection.CreateCommand();
