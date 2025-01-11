@@ -44,33 +44,37 @@ namespace CandyShop.Controllers
 
             try
             {
-                using (StreamReader reader = new StreamReader(Configuration.DocPath, true))
+                using var connection = new MySqlConnection(ConnectionString);
+                connection.Open();
+
+                using var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = "SELECT * FROM Product";
+
+                using var reader = tableCmd.ExecuteReader();
+
+                if (reader.HasRows)
                 {
-                    reader.ReadLine(); // discard first line
-                    var line = reader.ReadLine();
-
-                    while (line != null)
+                    while (reader.Read())
                     {
-                        string[] parts = line.Split(',');
-
-                        if (int.Parse(parts[1]) == (int)ProductType.ChocolateBar)
+                        if (reader.GetInt32(5) == (int)ProductType.ChocolateBar)
                         {
-                            var product = new ChocolateBar(int.Parse(parts[0]));
-                            product.Name = parts[2].Trim();
-                            product.Price = decimal.Parse(parts[3].Trim());
-                            product.CocoaPercentage = int.Parse(parts[4].Trim());
-                            products.Add(product);
+
+                            products.Add(new ChocolateBar(reader.GetInt32(0))
+                            {
+                                Name = reader.GetString(1),
+                                Price = reader.GetDecimal(2),
+                                CocoaPercentage = reader.GetInt32(3),
+                            });
                         }
                         else
                         {
-                            var product = new Lollipop(int.Parse(parts[0]));
-                            product.Name = parts[2].Trim();
-                            product.Price = decimal.Parse(parts[3].Trim());
-                            product.Shape = parts[5].Trim();
-                            products.Add(product);
+                            products.Add(new Lollipop(reader.GetInt32(0))
+                            {
+                                Name = reader.GetString(1),
+                                Price = reader.GetDecimal(2),
+                                Shape = reader.GetString(4),
+                            });
                         }
-
-                        line = reader.ReadLine();
                     }
                 }
             }
