@@ -37,7 +37,8 @@ Candy Shop is a console-based inventory management application designed to strea
 :heavy_check_mark: **AddProduct**: Add new Chocolate Bars or Lollipops with input validation;\
 :heavy_check_mark: **DeleteProduct**: Remove products from the inventory;\
 :heavy_check_mark: **UpdateProduct**: Modify product details selectively;\
-:heavy_check_mark: **QuitProgram**: Exit the application;
+:heavy_check_mark: **QuitProgram**: Exit the application;\
+:heavy_check_mark: **Unit Tests**: Includes tests to ensure reliable input handling;
 
 ## :rocket: Technologies
 
