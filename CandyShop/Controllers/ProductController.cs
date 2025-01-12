@@ -4,11 +4,24 @@ using MySqlConnector;
 
 namespace CandyShop.Controllers
 {
-    internal class ProductController
+    public interface IProductController
+    {
+        List<Product> GetProducts();
+
+        void AddProduct(Product product);
+
+        // void AddProducts(Lis<Product> products);
+
+        void DeleteProduct(Product product);
+
+        void UpdateProduct(Product product);
+    }
+
+    public class ProductController : IProductController
     {
         readonly DatabaseHandler databaseHandler = new DatabaseHandler();
 
-        internal List<Product> GetProducts()
+        public List<Product> GetProducts()
         {
             var products = new List<Product>();
 
@@ -56,7 +69,7 @@ namespace CandyShop.Controllers
             return products;
         }
 
-        internal void AddProduct(Product product)
+        public void AddProduct(Product product)
         {
             try
             {
@@ -77,7 +90,7 @@ namespace CandyShop.Controllers
             }
         }
 
-        // internal void AddProducts(List<Product> products)
+        // public void AddProducts(List<Product> products)
         // {
         //     try
         //     {
@@ -99,7 +112,7 @@ namespace CandyShop.Controllers
         //     }
         // }
 
-        internal void DeleteProduct(Product product)
+        public void DeleteProduct(Product product)
         {
             try
             {
@@ -117,7 +130,7 @@ namespace CandyShop.Controllers
             }
         }
 
-        internal void UpdateProduct(Product product)
+        public void UpdateProduct(Product product)
         {
             try
             {

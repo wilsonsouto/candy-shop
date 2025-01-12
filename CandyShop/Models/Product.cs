@@ -4,13 +4,13 @@ using MySqlConnector;
 
 namespace CandyShop.Models
 {
-    internal abstract class Product
+    public abstract class Product
     {
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
         private string _name = "";
 
-        internal string Name
+        public string Name
         {
             get => _name;
             set
@@ -19,32 +19,32 @@ namespace CandyShop.Models
             }
         }
 
-        internal decimal Price { get; set; }
+        public decimal Price { get; set; }
 
-        internal ProductType Type { get; set; }
+        public ProductType Type { get; set; }
 
-        internal Product() { }
+        public Product() { }
 
-        internal Product(int id)
+        public Product(int id)
         {
             Id = id;
         }
 
-        internal Product(int id, string name, decimal price)
+        public Product(int id, string name, decimal price)
         {
             Id = id;
             Name = name;
             Price = price;
         }
 
-        internal abstract string GetProductsForCsv(int id);
+        public abstract string GetProductsForCsv(int id);
 
-        internal abstract string GetProductForPanel();
+        public abstract string GetProductForPanel();
 
-        internal abstract string GetInsertQuery();
+        public abstract string GetInsertQuery();
 
-        internal abstract string GetUpdateQuery();
+        public abstract string GetUpdateQuery();
 
-        internal abstract void AddParameters(MySqlCommand cmd);
+        public abstract void AddParameters(MySqlCommand cmd);
     }
 }

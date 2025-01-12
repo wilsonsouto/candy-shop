@@ -3,27 +3,27 @@ using MySqlConnector;
 
 namespace CandyShop.Models
 {
-    internal class ChocolateBar : Product
+    public class ChocolateBar : Product
     {
-        internal int CocoaPercentage { get; set; }
+        public int CocoaPercentage { get; set; }
 
-        internal ChocolateBar()
+        public ChocolateBar()
         {
             Type = ProductType.ChocolateBar;
         }
 
-        internal ChocolateBar(int id)
+        public ChocolateBar(int id)
             : base(id)
         {
             Type = ProductType.ChocolateBar;
         }
 
-        internal override string GetProductsForCsv(int id)
+        public override string GetProductsForCsv(int id)
         {
             return $"{id},{(int)Type},{Name},{Price},{CocoaPercentage}";
         }
 
-        internal override string GetProductForPanel()
+        public override string GetProductForPanel()
         {
             return $@"
 Id: {Id}
@@ -33,12 +33,12 @@ Price: {Price}
 Cocoa percentage: {CocoaPercentage}";
         }
 
-        internal override string GetInsertQuery()
+        public override string GetInsertQuery()
         {
             return $@"INSERT INTO Product (name, price, type, cocoaPercentage) VALUES (@Name, @Price, @Type, @CocoaPercentage)";
         }
 
-        internal override void AddParameters(MySqlCommand cmd)
+        public override void AddParameters(MySqlCommand cmd)
         {
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Price", Price);
@@ -46,7 +46,7 @@ Cocoa percentage: {CocoaPercentage}";
             cmd.Parameters.AddWithValue("@CocoaPercentage", CocoaPercentage);
         }
 
-        internal override string GetUpdateQuery()
+        public override string GetUpdateQuery()
         {
             return $@"UPDATE Product SET name = @Name, price = @Price, type = 0, cocoaPercentage = @CocoaPercentage WHERE Id = {Id}";
         }

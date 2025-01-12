@@ -1,6 +1,6 @@
 namespace CandyShop.Enums
 {
-    internal enum MainMenuOptions
+    public enum MainMenuOptions
     {
         ViewProductsList,
 
@@ -15,7 +15,7 @@ namespace CandyShop.Enums
         QuitProgram,
     }
 
-    internal enum ProductType
+    public enum ProductType
     {
         ChocolateBar,
 

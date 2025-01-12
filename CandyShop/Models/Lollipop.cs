@@ -3,33 +3,33 @@ using MySqlConnector;
 
 namespace CandyShop.Models
 {
-    internal class Lollipop : Product
+    public class Lollipop : Product
     {
-        internal string _shape { get; set; } = "";
+        public string _shape { get; set; } = "";
 
-        internal string Shape
+        public string Shape
         {
             get => _shape;
             set => _shape = Helpers.ProductHelper.CapitalizeFirstLetter(value);
         }
 
-        internal Lollipop()
+        public Lollipop()
         {
             Type = ProductType.Lollipop;
         }
 
-        internal Lollipop(int id)
+        public Lollipop(int id)
             : base(id)
         {
             Type = ProductType.Lollipop;
         }
 
-        internal override string GetProductsForCsv(int id)
+        public override string GetProductsForCsv(int id)
         {
             return $"{id},{(int)Type},{Name},{Price},,{Shape}";
         }
 
-        internal override string GetProductForPanel()
+        public override string GetProductForPanel()
         {
             return $@"
 Id: {Id}
@@ -39,12 +39,12 @@ Price: {Price}
 Shape: {Shape}";
         }
 
-        internal override string GetInsertQuery()
+        public override string GetInsertQuery()
         {
             return $@"INSERT INTO Product (name, price, type, shape) VALUES (@Name, @Price, @Type, @Shape)";
         }
 
-        internal override void AddParameters(MySqlCommand cmd)
+        public override void AddParameters(MySqlCommand cmd)
         {
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Price", Price);
@@ -52,7 +52,7 @@ Shape: {Shape}";
             cmd.Parameters.AddWithValue("@Shape", Shape);
         }
 
-        internal override string GetUpdateQuery()
+        public override string GetUpdateQuery()
         {
             return $@"UPDATE Product SET name = @Name, price = @Price, type = 1, shape = @Shape WHERE Id = {Id}";
         }
