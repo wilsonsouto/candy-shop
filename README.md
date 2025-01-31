@@ -28,7 +28,7 @@
 
 ## :dart: About
 
-This console-based application streamlines the management of a candy store’s products. It interacts directly with a database, allowing users to add, retrieve, update, and delete product information. With a clean, interactive console interface and robust input validation, the application simplifies operations while ensuring data accuracy
+This console application streamlines candy store product management, interacting directly with a database to enable users to add, retrieve, update, and delete product information. With an intuitive console interface and robust input validation, the app simplifies operations and ensures data accuracy.
 
 ## :sparkles: Features
 
