@@ -28,7 +28,7 @@
 
 ## :dart: About
 
-Candy Shop is a console-based inventory management application designed to streamline the management of a candy store's product inventory. It interacts directly with a database to allow users to add, retrieve, update, and delete product information. Featuring a clean, interactive console interface and robust input validation, the application simplifies inventory management while ensuring data accuracy.
+This console-based application streamlines the management of a candy store’s products. It interacts directly with a database, allowing users to add, retrieve, update, and delete product information. With a clean, interactive console interface and robust input validation, the application simplifies operations while ensuring data accuracy
 
 ## :sparkles: Features
 
