@@ -32,13 +32,13 @@ This console application streamlines candy store product management, interacting
 
 ## :sparkles: Features
 
-:heavy_check_mark: **ViewProductsList**: Display all products in a formatted table;\
-:heavy_check_mark: **ViewSingleProduct**: Show detailed info for a selected product;\
-:heavy_check_mark: **AddProduct**: Add new Chocolate Bars or Lollipops with input validation;\
-:heavy_check_mark: **DeleteProduct**: Remove products from the inventory;\
-:heavy_check_mark: **UpdateProduct**: Modify product details selectively;\
-:heavy_check_mark: **QuitProgram**: Exit the application;\
-:heavy_check_mark: **Unit Tests**: Includes tests to ensure reliable input handling;
+:heavy_check_mark: **ViewProductsList**: Display all products in a formatted table.\
+:heavy_check_mark: **ViewSingleProduct**: Show detailed info for a selected product.\
+:heavy_check_mark: **AddProduct**: Add new Chocolate Bars or Lollipops with input validation.\
+:heavy_check_mark: **DeleteProduct**: Remove products from the inventory.\
+:heavy_check_mark: **UpdateProduct**: Modify product details selectively.\
+:heavy_check_mark: **QuitProgram**: Exit the application.\
+:heavy_check_mark: **Unit Tests**: Includes tests to ensure reliable input handling.
 
 ## :rocket: Technologies
 
@@ -59,7 +59,7 @@ Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) an
 # Clone this project
 $ git clone https://github.com/wilsonsouto/candy-shop
 
-# Access
+# Access the project folder
 $ cd candy-shop/CandyShop
 
 # Set up the database connection, edit the .env file with your MySQL credentials
