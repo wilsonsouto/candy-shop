@@ -1,7 +1,6 @@
-namespace CandyShop
+namespace CandyShop;
+
+internal static class Configuration
 {
-    internal static class Configuration
-    {
-        internal static string DocPath = "CandyShop/Products.csv";
-    }
+    internal static string DocPath = "CandyShop/Products.csv";
 }

@@ -1,6 +1,8 @@
 using MySqlConnector;
 using DotNetEnv;
 
+namespace CandyShop.Data;
+
 internal class DatabaseHandler
 {
     public string ConnectionString { get; }

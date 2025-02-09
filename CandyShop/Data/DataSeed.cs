@@ -1,10 +1,10 @@
 using CandyShop.Controllers;
 using CandyShop.Models;
 
-namespace CandyShop
+namespace CandyShop.Data;
+
+internal class DataSeed
 {
-    internal class DataSeed
-    {
     //     internal static void SeedData()
     //     {
     //         List<Product> products = new List<Product>
@@ -85,5 +85,4 @@ namespace CandyShop
 
     //         productsControllers.AddProducts(products);
     //     }
-    }
 }
