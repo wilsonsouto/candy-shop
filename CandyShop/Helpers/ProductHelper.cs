@@ -1,17 +1,18 @@
-namespace CandyShop.Helpers;
-
-internal static class ProductHelper
+namespace CandyShop.Helpers
 {
-    internal static int GetDaysSinceOpening()
+    public static class ProductHelper
     {
-        DateTime openingDate = new DateTime(1997, 1, 25);
-        TimeSpan timeDifference = DateTime.Now - openingDate;
+        public static int GetDaysSinceOpening()
+        {
+            var openingDate = new DateTime(1997, 1, 25);
+            TimeSpan timeDifference = DateTime.Now - openingDate;
 
-        return timeDifference.Days;
-    }
+            return timeDifference.Days;
+        }
 
-    internal static string CapitalizeFirstLetter(string product)
-    {
-        return char.ToUpper(product[0]) + product[1..].ToLower();
+        public static string CapitalizeFirstLetter(string product)
+        {
+            return char.ToUpper(product[0]) + product[1..].ToLower();
+        }
     }
 }

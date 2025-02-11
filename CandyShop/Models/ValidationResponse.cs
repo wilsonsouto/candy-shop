@@ -1,18 +1,19 @@
-namespace CandyShop.Models;
-
-public class ValidationResponse
+namespace CandyShop.Models
 {
-    public bool IsValid { get; set; }
+    public class ValidationResponse
+    {
+        public bool IsValid { get; set; }
 
-    internal string ErrorMessage { get; set; } = "";
-}
+        public string ErrorMessage { get; set; } = "";
+    }
 
-public class CocoaValidationResponse : ValidationResponse
-{
-    internal int CocoaPercentage { get; set; }
-}
+    public class CocoaValidationResponse : ValidationResponse
+    {
+        public int CocoaPercentage { get; set; }
+    }
 
-public class PriceValidationResponse : ValidationResponse
-{
-    internal decimal Price { get; set; }
+    public class PriceValidationResponse : ValidationResponse
+    {
+        public decimal Price { get; set; }
+    }
 }

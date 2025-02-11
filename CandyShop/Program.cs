@@ -1,18 +1,19 @@
 ﻿using CandyShop.Views;
 using CandyShop.Data;
 
-namespace CandyShop;
-
-internal static class Program
+namespace CandyShop
 {
-    internal static void Main(string[] args)
+    public static class Program
     {
-        DatabaseHandler databaseHandler = new();
-        databaseHandler.CreateDatabase();
+        public static void Main(string[] args)
+        {
+            DatabaseHandler databaseHandler = new();
+            databaseHandler.CreateDatabase();
 
-        // if (!File.Exists(Configuration.DocPath))
-        //     DataSeed.SeedData();
+            //if (!File.Exists(Configuration.DocPath))
+            //    DataSeed.SeedData();
 
-        ProductView.RunMainMenu();
+            ProductView.RunMainMenu();
+        }
     }
 }

@@ -1,23 +1,24 @@
-namespace CandyShop.Enums;
-
-public enum MainMenuOptions
+namespace CandyShop.Enums
 {
-    ViewProductsList,
+    public enum MainMenuOptions
+    {
+        ViewProductsList,
 
-    ViewSingleProduct,
+        ViewSingleProduct,
 
-    AddProduct,
+        AddProduct,
 
-    DeleteProduct,
+        DeleteProduct,
 
-    UpdateProduct,
+        UpdateProduct,
 
-    QuitProgram,
-}
+        QuitProgram,
+    }
 
-public enum ProductType
-{
-    ChocolateBar,
+    public enum ProductType
+    {
+        ChocolateBar,
 
-    Lollipop,
+        Lollipop,
+    }
 }
