@@ -3,9 +3,9 @@ using CandyShop.Data;
 using CandyShop.Models;
 using MySqlConnector;
 
-namespace CandyShop.Controllers
+namespace CandyShop.Services
 {
-    public class ProductController : IProductController
+    public class ProductService : IProductService
     {
         readonly DatabaseHandler? databaseHandler;
 

@@ -1,8 +1,8 @@
 ﻿using CandyShop.Models;
 
-namespace CandyShop.Controllers
+namespace CandyShop.Services
 {
-    public interface IProductController
+    public interface IProductService
     {
         List<Product> GetProducts();
 

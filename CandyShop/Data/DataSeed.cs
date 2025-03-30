@@ -1,4 +1,4 @@
-using CandyShop.Controllers;
+using CandyShop.Services;
 using CandyShop.Models;
 
 namespace CandyShop.Data

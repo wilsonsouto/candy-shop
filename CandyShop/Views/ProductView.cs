@@ -1,4 +1,4 @@
-using CandyShop.Controllers;
+using CandyShop.Services;
 using CandyShop.Enums;
 using CandyShop.Helpers;
 using CandyShop.Models;
@@ -10,7 +10,7 @@ namespace CandyShop.Views
     {
         public static void RunMainMenu()
         {
-            ProductController productController = new();
+            ProductService productService = new();
 
             PrintHeader();
 
@@ -34,7 +34,7 @@ namespace CandyShop.Views
                 switch (usersChoice)
                 {
                     case MainMenuOptions.ViewProductsList:
-                        var result = productController.GetProducts();
+                        var result = productService.GetProducts();
                         ViewProducts(result);
                         break;
                     case MainMenuOptions.ViewSingleProduct:
@@ -43,16 +43,16 @@ namespace CandyShop.Views
                         break;
                     case MainMenuOptions.AddProduct:
                         var product = GetProductInput();
-                        productController.AddProduct(product);
+                        productService.AddProduct(product);
                         break;
                     case MainMenuOptions.DeleteProduct:
                         var productToDelete = GetProductChoice();
-                        productController.DeleteProduct(productToDelete);
+                        productService.DeleteProduct(productToDelete);
                         break;
                     case MainMenuOptions.UpdateProduct:
                         var productToUpdate = GetProductChoice();
                         var updatedProduct = GetProductUpdateInput(productToUpdate);
-                        productController.UpdateProduct(updatedProduct);
+                        productService.UpdateProduct(updatedProduct);
                         break;
                     case MainMenuOptions.QuitProgram:
                         Console.WriteLine("Exiting the program.");
@@ -133,7 +133,7 @@ namespace CandyShop.Views
 
         private static Product GetProductChoice()
         {
-            var productController = new ProductController();
+            var productController = new ProductService();
             var products = productController.GetProducts();
             var productsArray = products.Select(x => x.Name).ToArray();
             var option = AnsiConsole.Prompt(
